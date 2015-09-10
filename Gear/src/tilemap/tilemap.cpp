@@ -24,8 +24,7 @@ bool TileMap::load(const char * file)
 	if(root != 0)
 	{
 		initSurface(root);
-		for(tinyxml2::XMLElement * e = root->FirstChildElement(); e != 0;
-			e = e->NextSiblingElement())
+		for(tinyxml2::XMLElement * e = root->FirstChildElement(); e != 0; e = e->NextSiblingElement())
 		{
 			if(e->Value() == std::string("tileset"))
 				this->loadTileset(e);
@@ -50,10 +49,10 @@ void TileMap::initSurface(tinyxml2::XMLElement * root)
 	_tileHeight = atoi(root->Attribute("tileheight"));
 
 	const char * color = root->Attribute("backgroundcolor");
-	_dftclr.fromString(color);
+	_bgColor.fromString(color);
 
 	_image.resize(_w*_tileWidth, _h*_tileHeight);
-	SDL_FillRect(_image.surface(), 0, _dftclr.toint());
+	SDL_FillRect(_image.surface(), 0, _bgColor.toint());
 }
 
 void TileMap::loadTileset(tinyxml2::XMLElement * e)
