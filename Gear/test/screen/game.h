@@ -4,6 +4,8 @@
 #include "../../src/screen.h"
 #include "../../src/world.h"
 #include "../../src/tilemap/tilemap.h"
+#include "../../src/movie.h"
+#include "../../src/spritesheet.h"
 
 class Game : public Screen
 {
@@ -14,14 +16,24 @@ public:
 	virtual void handleEvent(const SDL_Event& event);
 
 private:
+	Movie _movie;
 	World _world;
 	TileMap _tilemap;
 };
 
 inline bool Game::init()
 {
-	_tilemap.load("test.tmx");
+	_tilemap.load("map.tmx");
+	
 	_world.appendChild(&_tilemap);
+	_world.appendChild(&_movie);
+	_world.setActive();
+
+	Image image("om.png");
+	_movie.addFrames(&image, 0, 0, 163, 133, 2, 6);
+	_movie.loop();
+	_movie.play();
+	_movie.setActive();
 
 	return true;
 }
@@ -53,6 +65,7 @@ inline void Game::handleEvent(const SDL_Event& event)
 			const Uint8* sta = SDL_GetKeyboardState(0);
 			if(sta[SDL_SCANCODE_Q])
 				_tilemap.setVisiable(!_tilemap.visiable());
+
 			break;
 		}
 	default:

@@ -1,7 +1,16 @@
 #include "spritesheet.h"
 
-SpriteSheet::SpriteSheet() : _update(true), _surface(0), _w(0), _h(0), _luptime(0), 
-		_texture(0), _fps(60), _step(0), _frames(0), _playing(false) 
+SpriteSheet::SpriteSheet() : 
+	_update(true), 
+	_surface(0), 
+	_w(0), 
+	_h(0), 
+	_luptime(0), 
+	_texture(0), 
+	_fps(60), 
+	_step(0), 
+	_frames(0), 
+	_playing(false) 
 {
 }
 
@@ -10,23 +19,23 @@ SDL_Surface * SpriteSheet::createSurface(int w, int h)
 	if(_surface)
 	{
 		SDL_Surface * surface = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
-		SDL_Surface * abgr8888 = SDL_ConvertSurfaceFormat(surface,
-			SDL_PIXELFORMAT_ABGR8888, 0);
+		//SDL_Surface * abgr8888 = SDL_ConvertSurfaceFormat(surface,
+		//	SDL_PIXELFORMAT_ABGR8888, 0);
 
-		SDL_FreeSurface(surface);
+		//SDL_FreeSurface(surface);
+		//surface = abgr8888
 
-		SDL_SetSurfaceBlendMode(abgr8888, SDL_BLENDMODE_BLEND);
-		SDL_FillRect(surface, 0, SDL_MapRGBA(abgr8888->format, 0, 0, 0, 0));
+		//SDL_SetSurfaceBlendMode(abgr8888, SDL_BLENDMODE_BLEND);
 		
 		SDL_Rect rect;
 		rect.x = 0;
 		rect.y = 0;
 		rect.w = _surface->w;
 		rect.h = _surface->h;
-		SDL_BlitSurface(_surface, &rect, abgr8888, &rect);
+		SDL_BlitSurface(_surface, &rect, surface, &rect);
 
 		SDL_FreeSurface(_surface);
-		_surface = abgr8888;
+		_surface = surface;
 	}
 	else
 	{

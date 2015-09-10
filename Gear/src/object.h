@@ -14,6 +14,8 @@ public:
 	int x();
 	int y();
 	bool visiable();
+	bool actived();
+	void setActive(bool active = true);
 	void setPosition(int x, int y);
 	void setVisiable(bool visiable = true);
 	bool appendChild(Object * child);
@@ -30,6 +32,7 @@ private:
 	void removeChild(Object * child);
 
 	bool _visiable;
+	bool _actived;
 	Object * m_parent;
 	std::vector <Object * > m_children;
 };
@@ -42,6 +45,16 @@ inline int Object::x()
 inline int Object::y() 
 {
 	return _y;
+}
+
+inline bool Object::actived()
+{
+	return _actived;
+}
+
+inline void Object::setActive(bool active)
+{
+	_actived = active;
 }
 
 inline void Object::setPosition(int x, int y) 

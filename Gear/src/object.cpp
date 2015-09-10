@@ -4,6 +4,7 @@
 Object::Object() : 
 	m_parent(0),
 	_visiable(true),
+	_actived(false),
 	_x(0),
 	_y(0)
 {
@@ -52,7 +53,15 @@ void Object::draw(SDL_Renderer * renderer)
 
 void Object::update(unsigned int dt)
 {
-	std::vector<Object *>::iterator it = m_children.begin();
-	while(it != m_children.end())
-		(*it++)->update(dt);
+	if(_actived)
+	{
+		std::vector<Object *>::iterator it = m_children.begin();
+		while(it != m_children.end())
+		{
+			if((*it)->_actived)
+				(*it)->update(dt);
+
+			it++;
+		}
+	}
 }

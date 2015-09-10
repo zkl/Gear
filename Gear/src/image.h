@@ -3,9 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "drawable.h"
+#include "ref.h"
 
-class Image : public Drawable
+class Image : public Ref
 {
 public:
 	Image();
@@ -23,6 +23,8 @@ public:
 	void draw(SDL_Surface* surface, int x = 0, int y = 0, int w = 0, int h = 0) const;
 	void draw(SDL_Renderer * renderer, int x = 0, int y = 0, int w = 0, int h = 0);
 	void drawEx(SDL_Surface* surface, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) const;
+
+	//void fill(SDL_Rect* rect, Color* c);
 
 	SDL_Surface* surface();
 
@@ -49,9 +51,11 @@ inline Image::Image(const char* file) :
 
 inline bool Image::load(const char* file)
 {
+	if(_surface != 0)
+		SDL_FreeSurface(_surface);
+
 	_update = true;
 	_surface = IMG_Load(file);
-
 	return _surface == 0;
 }
 

@@ -19,15 +19,6 @@ public:
 	void playByStep();
 	void setPlaySpeed(int fps);
 
-	/**
-	* @brief addFrame 
-	*
-	* @param resources
-	* @param x
-	* @param y
-	* @param w
-	* @param h
-	*/
 	void addFrame (const char * resources, int x, int y, int w, int h);
 	void addFrames(const char * resources, int x, int y, int w, int h,
 		int column, int frames);

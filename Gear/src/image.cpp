@@ -7,10 +7,15 @@ void Image::resize(int w, int h)
 		return ;
 
 	SDL_Surface* surface = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+
+	SDL_Surface* abgr = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_ABGR8888, 0);
+	SDL_FreeSurface(surface);
+	surface = abgr;
+
 	SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
 	SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
-	this->draw(surface);
 
+	this->draw(surface);
 
 	if(_surface != 0)
 		SDL_FreeSurface(_surface);
@@ -24,22 +29,13 @@ void Image::copy(const Image& other, int x, int y, int w, int h)
 	if(other._surface == 0)
 		return ;
 
+	if(_surface == 0)
+		this->resize(w, h);
+
 	w = w <= 0? other._surface->w-x : w;
 	h = h <= 0? other._surface->h-y : h;
 
-	if(_surface != 0)
-		SDL_FreeSurface(_surface);
-
-	if(_texture != 0)
-		SDL_DestroyTexture(_texture);
-
 	_update = true;
-	_texture = 0;
-	_surface = 0;
-
-	_surface = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
-	SDL_SetSurfaceBlendMode(_surface, SDL_BLENDMODE_BLEND);
-	SDL_FillRect(_surface, 0, SDL_MapRGBA(_surface->format, 0, 0, 0, 0));
 
 	SDL_Rect desrect;
 	SDL_Rect srcrect;

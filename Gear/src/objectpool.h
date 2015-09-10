@@ -8,7 +8,6 @@ class ObjectPool
 {
 public:
 	static ObjectPool * instance();
-
 	void push(Ref * r);
 	void clear();
 

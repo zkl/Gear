@@ -1,6 +1,6 @@
-#include "sdlgame.h"
-#include "../test/screen/game.h"
-#include "../test/screen/menu.h"
+#include "../src/sdlgame.h"
+#include "screen/game.h"
+#include "screen/menu.h"
 
 int main(int argc, char * argv[])
 {

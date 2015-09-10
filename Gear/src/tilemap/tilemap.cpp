@@ -52,7 +52,8 @@ void TileMap::initSurface(tinyxml2::XMLElement * root)
 	_bgColor.fromString(color);
 
 	_image.resize(_w*_tileWidth, _h*_tileHeight);
-	SDL_FillRect(_image.surface(), 0, _bgColor.toint());
+	SDL_FillRect(_image.surface(), 0, 
+		SDL_MapRGB(_image.surface()->format, _bgColor.r(), _bgColor.g(), _bgColor.b()));
 }
 
 void TileMap::loadTileset(tinyxml2::XMLElement * e)

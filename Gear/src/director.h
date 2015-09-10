@@ -1,7 +1,7 @@
 #ifndef DIRECTOR_H
 #define DIRECTOR_H
 
-#include <unordered_map>
+#include <map>
 #include <string>
 #include "screen.h"
 
@@ -19,7 +19,7 @@ public:
 private:
 	Director();
 
-	typedef std::unordered_map<std::string, Screen*> ScreenContiner;
+	typedef std::map<std::string, Screen*> ScreenContiner;
 	
 	ScreenContiner _screenCollection;
 	ScreenContiner::iterator _currentScreen;
