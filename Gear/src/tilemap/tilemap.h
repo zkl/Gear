@@ -54,8 +54,8 @@ private:
 
 inline void TileMap::move(int x, int y)
 {
-	_x+=x; 
-	_y+=y;
+	_x += x; 
+	_y += y;
 }
 
 inline int TileMap::getGid(int row, int colum)

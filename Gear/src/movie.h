@@ -1,6 +1,8 @@
 #ifndef MOVIE_H
 #define MOVIE_H
 
+#include <vector>
+#include "image.h"
 #include "object.h"
 
 class Movie : public  Object
@@ -12,10 +14,16 @@ public:
 
 	void play();
 	void stop();
-	void addFrame();
+	void addFrame(Image* frame);
 	bool playing();
-private:
+	void loop(bool loop = true);
+	void speed(int interval);
 
+private:
+	bool _loop;
+	bool _playing;
+	int  _frame;
+	std::vector<Image *> _frames;
 };
 
 inline void Movie::draw(SDL_Renderer * renderer)
