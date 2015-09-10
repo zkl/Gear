@@ -1,0 +1,64 @@
+#ifndef OBJECT_H
+#define OBJECT_H
+
+#include <vector>
+#include <SDL2/SDL.h>
+#include "ref.h"
+
+class Object : public Ref
+{
+public:
+	Object();
+	virtual ~Object();
+
+	int x();
+	int y();
+	bool visiable();
+	void setPosition(int x, int y);
+	void setVisiable(bool visiable = true);
+	bool appendChild(Object * child);
+	Object * parent(){return m_parent;}
+
+	virtual void draw(SDL_Renderer * renderer);
+	virtual bool init(){return false;}
+	virtual void update(unsigned int dt);
+
+protected:
+	int _x, _y;
+
+private:
+	void removeChild(Object * child);
+
+	bool _visiable;
+	Object * m_parent;
+	std::vector <Object * > m_children;
+};
+
+inline int Object::x() 
+{
+	return _x;
+}
+
+inline int Object::y() 
+{
+	return _y;
+}
+
+inline void Object::setPosition(int x, int y) 
+{
+	_x = x; 
+	_y = y;
+}
+
+inline bool Object::visiable()
+{
+	return _visiable;
+}
+
+inline void Object::setVisiable(bool visiable)
+{
+	_visiable = visiable;	
+}
+
+
+#endif
