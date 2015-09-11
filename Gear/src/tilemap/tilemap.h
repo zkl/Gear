@@ -1,6 +1,7 @@
 #ifndef TILE_MAP_H
 #define TILE_MAP_H
 
+#include <map>
 #include <tinyxml2.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -10,6 +11,8 @@
 #include "../object.h"
 #include "../color.h"
 #include "../image.h"
+
+using namespace tinyxml2;
 
 class TileMap : public Object
 {
@@ -33,10 +36,10 @@ public:
 	virtual void draw(SDL_Renderer * renderer);
 
 private:
-	void initSurface(tinyxml2::XMLElement * root);
-	void loadTileset(tinyxml2::XMLElement * e);
-	void loadLayers(tinyxml2::XMLElement * e);
-	void loadImageLayer(tinyxml2::XMLElement * e);
+	void analyzeMapInfo(XMLElement * element);
+	void analyzeTileset(XMLElement * element);
+	void anylyzeLayers(XMLElement * element);
+	void anylyzeImageLayer(XMLElement * element);
 	void drawlayer(Layer * layer);
 
 	Tileset * getTileset(int gid);
@@ -46,8 +49,11 @@ private:
 	int _tileWidth, _tileHeight;
 	Color _bgColor;
 
-	std::vector<Tileset *> _tilesets;
+	//std::vector<Tileset *> _tilesets;
 	std::vector<Layer * > _layers;
+
+	// name -> tileset
+	std::map<std::string, Tileset*> _tilesets;
 
 	Image _image;
 };
@@ -60,6 +66,9 @@ inline void TileMap::move(int x, int y)
 
 inline int TileMap::getGid(int x, int y)
 {
+	if(_tileWidth == 0 || _tileHeight == 0)
+		SDL_Log("map error");
+
 	int row = y/_tileHeight;
 	int colum = x/_tileWidth;
 	int position = row * _w + colum;

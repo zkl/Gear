@@ -24,7 +24,7 @@ public:
 private:
 	void move();
 
-	typedef enum Direction
+	enum Direction
 	{
 		DIR_LEFT,
 		DIR_RIGHT,
@@ -32,6 +32,7 @@ private:
 		DIR_DOWN,
 		DIR_STOP
 	};
+
 	Direction _direction;
 	Direction _currentDirection;
 
@@ -40,7 +41,7 @@ private:
 	int _uptime;
 	bool _dead;
 
-	typedef struct SnakeNode
+	struct SnakeNode
 	{
 		int x;
 		int y;
@@ -89,36 +90,24 @@ inline void Snake::turnLeft()
 inline void Snake::turnRight()
 {
 	if(_currentDirection != DIR_LEFT)
-	{
-		if(_currentDirection == DIR_STOP)
-			_currentDirection = DIR_RIGHT;
-		else
-			_direction = DIR_RIGHT;
-
-	}
+		_direction = DIR_RIGHT;
 }
 
 inline void Snake::turnUp()
 {
 	if(_currentDirection != DIR_DOWN)
-	{
-		if(_currentDirection == DIR_STOP)
-			_currentDirection = DIR_UP;
-		else
-			_direction = DIR_UP;
-	}
+		_direction = DIR_UP;
 }
 
 inline void Snake::turnDown()
 {
 	if(_currentDirection != DIR_UP)
 		_direction = DIR_DOWN;
-
 }
 
 inline bool Snake::init()
 {
-	_speed = 10;
+	_speed = 140;
 	_level = 1;
 	_uptime = 0;
 	_dead = false;
@@ -166,9 +155,6 @@ inline void Snake::draw(SDL_Renderer * renderer)
 
 inline void Snake::move()
 {
-	if(_currentDirection == DIR_STOP)
-		return ;
-
 	for(int i=_snake.size()-1; i>0; i--)
 	{
 		_snake[i].x = _snake[i-1].x;
@@ -177,13 +163,13 @@ inline void Snake::move()
 
 
 	if(_currentDirection == DIR_LEFT)
-		_snake[0].x -= 1;
+		_snake[0].x -= _gridWidth;
 	else if(_currentDirection == DIR_RIGHT)
-		_snake[0].x += 1;
+		_snake[0].x += _gridWidth;
 	else if(_currentDirection == DIR_UP)
-		_snake[0].y -= 1;
+		_snake[0].y -= _gridHeight;
 	else
-		_snake[0].y += 1;
+		_snake[0].y += _gridHeight;
 
 	if(_snake[0].x%_gridWidth == 0 && _snake[0].y%_gridHeight == 0)
 	{
@@ -192,10 +178,9 @@ inline void Snake::move()
 			if(_snake[i].x == _snake[0].x && _snake[i].y == _snake[0].y)
 				_dead = true;
 		}
-		_currentDirection = _direction;
-		_direction = DIR_STOP;
 	}
 
+	_currentDirection = _direction;
 	this->setPosition(_snake[0].x, _snake[0].y);
 }
 

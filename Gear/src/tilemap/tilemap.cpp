@@ -16,32 +16,28 @@ TileMap::~TileMap()
 
 bool TileMap::load(const char * file)
 {
-	tinyxml2::XMLDocument document;
-
+	XMLDocument document;
 	document.LoadFile(file);
-
-	tinyxml2::XMLElement * root = document.FirstChildElement("map");
+	XMLElement * root = document.FirstChildElement("map");
 	if(root != 0)
 	{
-		initSurface(root);
-		for(tinyxml2::XMLElement * e = root->FirstChildElement(); e != 0; e = e->NextSiblingElement())
+		analyzeMapInfo(root);
+		for(XMLElement* e = root->FirstChildElement(); e != 0; 
+			e = e->NextSiblingElement())
 		{
 			if(e->Value() == std::string("tileset"))
-				this->loadTileset(e);
+				this->analyzeTileset(e);
 			else if(e->Value() == std::string("layer"))
-				this->loadLayers(e);
+				this->anylyzeLayers(e);
 			else if(e->Value() == std::string("imagelayer"))
-				this->loadImageLayer(e);
+				this->anylyzeImageLayer(e);
 		}
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
-void TileMap::initSurface(tinyxml2::XMLElement * root)
+void TileMap::analyzeMapInfo(tinyxml2::XMLElement * root)
 {
 	_w = atoi(root->Attribute("width"));
 	_h = atoi(root->Attribute("height"));
@@ -53,10 +49,10 @@ void TileMap::initSurface(tinyxml2::XMLElement * root)
 
 	_image.resize(_w*_tileWidth, _h*_tileHeight);
 	SDL_FillRect(_image.surface(), 0, 
-		SDL_MapRGB(_image.surface()->format,(Uint8)_bgColor.r(),(Uint8)_bgColor.g(), (Uint8)_bgColor.b()));
+		SDL_MapRGB(_image.surface()->format, (Uint8)_bgColor.r(),(Uint8)_bgColor.g(), (Uint8)_bgColor.b()));
 }
 
-void TileMap::loadTileset(tinyxml2::XMLElement * e)
+void TileMap::analyzeTileset(XMLElement * e)
 {
 	const char * name = 0;
 	const char * file = 0;
@@ -69,18 +65,16 @@ void TileMap::loadTileset(tinyxml2::XMLElement * e)
 	tileWidth = atoi(e->Attribute("tilewidth"));
 	tileHeight = atoi(e->Attribute("tileheight"));
 
-	tinyxml2::XMLElement * ie = e->FirstChildElement("image");
+	XMLElement * ie = e->FirstChildElement("image");
 	if(ie != 0)
 		file = ie->Attribute("source");
 
-	Tileset * tileset = new Tileset(name, fgid, tileWidth, tileHeight, file);
-	
-	_tilesets.push_back(tileset);
+	_tilesets[name] = new Tileset(name, fgid, tileWidth, tileHeight, file);
 }
 
-void TileMap::loadLayers(tinyxml2::XMLElement * e)
+void TileMap::anylyzeLayers(XMLElement * e)
 {
-	tinyxml2::XMLElement * data = e->FirstChildElement("data");
+	XMLElement * data = e->FirstChildElement("data");
 	
 	Layer * layer = new Layer(e->Attribute("name"));
 	_layers.push_back(layer);
@@ -112,7 +106,7 @@ void TileMap::loadLayers(tinyxml2::XMLElement * e)
 	drawlayer(layer);
 }
 
-void TileMap::loadImageLayer(tinyxml2::XMLElement * e)
+void TileMap::anylyzeImageLayer(XMLElement * e)
 {
 	int x = 0, y = 0;
 	const char * v;
@@ -140,13 +134,20 @@ Tileset * TileMap::getTileset(int gid)
 	if(_tilesets.size() == 0 || gid <= 0)
 		return 0;
 
-	for(unsigned int i=0; i<_tilesets.size(); i++)
+	std::map<std::string, Tileset*>::iterator max = _tilesets.begin();
+	std::map<std::string, Tileset*>::iterator it = _tilesets.begin();
+	while(it != _tilesets.end())
 	{
-		if(gid < _tilesets[i]->fgid())
-			return _tilesets[i-1];
+		if(gid < it->second->fgid())
+			return --it->second;
+
+		if(max->second->fgid() < it->second->fgid())
+			max = it;
+
+		it++;
 	}
 
-	return _tilesets[_tilesets.size()-1];
+	return max->second;
 }
 void TileMap::drawlayer(Layer * layer)
 {

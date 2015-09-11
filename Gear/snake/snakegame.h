@@ -27,6 +27,11 @@ inline bool SnakeGame::init()
 	_world.appendChild(&_snake);
 	_world.init();
 
+	_snake.uplevel();
+	_snake.uplevel();
+	_snake.uplevel();
+	_snake.uplevel();
+
 	return true;
 }
 
