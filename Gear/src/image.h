@@ -19,6 +19,8 @@ public:
 	int  width();
 	int  height();
 
+	void rotation(double angle);
+	void setOrigin(int x, int y);
 	void copy(const Image& other, int x, int y, int w = 0, int h = 0);
 	void draw(SDL_Surface* surface, int x = 0, int y = 0, int w = 0, int h = 0) const;
 	void draw(SDL_Renderer * renderer, int x = 0, int y = 0, int w = 0, int h = 0);
@@ -30,6 +32,10 @@ public:
 
 private:
 	bool _update;
+
+	double _angle;
+	SDL_Point _center;
+	SDL_RendererFlip _flip;
 	SDL_Texture * _texture;
 	SDL_Surface * _surface;
 };
@@ -37,8 +43,12 @@ private:
 inline Image::Image() : 
 	_surface(0),
 	_texture(0),
-	_update(true)
+	_angle(0.0),
+	_update(true),
+	_flip(SDL_FLIP_NONE)
 {
+	_center.x = 0;
+	_center.y = 0;
 }
 
 inline Image::Image(const char* file) : 
@@ -56,7 +66,13 @@ inline bool Image::load(const char* file)
 
 	_update = true;
 	_surface = IMG_Load(file);
-	return _surface == 0;
+	if(_surface != 0)
+		return false;
+
+	_center.x = _surface->w / 2;
+	_center.y = _surface->h / 2;
+	
+	return true;
 }
 
 inline Image::~Image()
@@ -69,6 +85,17 @@ inline Image::~Image()
 
 	_surface = 0;
 	_texture = 0;
+}
+
+inline void Image::rotation(double angle)
+{
+	_angle = angle;
+}
+
+inline void Image::setOrigin(int x, int y)
+{
+	_center.x = x;
+	_center.y = y;
 }
 
 inline bool Image::empty()

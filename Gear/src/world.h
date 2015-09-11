@@ -7,8 +7,6 @@
 class World : public Object
 {
 public:
-	virtual bool init();
-	
 	//b2World * physicsWorld(){return m_physicsWorld;}
 private:
 	//b2World * m_physicsWorld;

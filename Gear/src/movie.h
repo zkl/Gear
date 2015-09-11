@@ -36,7 +36,7 @@ inline Movie::Movie() :
 	_playing(false),
 	_frame(0),
 	_uptime(0),
-	_fps(20)
+	_fps(16)
 {
 }
 inline void Movie::play()
@@ -59,9 +59,14 @@ inline void Movie::loop(bool loop)
 	_loop = loop;
 }
 
+inline void Movie::speed(int interval)
+{
+	_fps = interval;
+}
+
 inline void Movie::draw(SDL_Renderer* renderer)
 {
-	if(_frame < _frames.size() && this->visiable())
+	if((unsigned int)_frame < _frames.size() && this->visiable())
 		_frames[_frame]->draw(renderer, _x, _y);
 }
 
@@ -85,7 +90,7 @@ inline void Movie::update(unsigned int dt)
 	if(_uptime >= 1000/_fps)
 	{
 		_uptime = 0;
-		if(++_frame >= _frames.size())
+		if((unsigned int)++_frame >= _frames.size())
 		{
 			_frame = 0;
 			if(!_loop)

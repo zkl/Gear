@@ -1,27 +1,42 @@
+#include <stdio.h>
 #include "image.h"
 
-	
 void Image::resize(int w, int h)
 {
 	if(w <= 0 || h <= 0)
 		return ;
 
-	SDL_Surface* surface = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+	Uint32 rmask, gmask, bmask, amask;
+	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+	#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+	#endif
 
-	SDL_Surface* abgr = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_ABGR8888, 0);
-	SDL_FreeSurface(surface);
-	surface = abgr;
+	SDL_Surface* surface = SDL_CreateRGBSurface(0, w, h, 32, rmask, gmask, bmask, amask);
+	if(surface == 0)
+		return ;
 
 	SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
 	SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
 
-	this->draw(surface);
-
 	if(_surface != 0)
+	{
+		this->drawEx(surface, 0, 0, w, h, 0, 0, _surface->w, _surface->h);
 		SDL_FreeSurface(_surface);
+	}
 
-	_surface = surface;
 	_update = true;
+	_surface = surface;
+
+	_center.x = _surface->w / 2;
+	_center.y = _surface->h / 2;
 }
 
 void Image::copy(const Image& other, int x, int y, int w, int h)
@@ -96,7 +111,8 @@ void Image::draw(SDL_Renderer * renderer, int x, int y, int w, int h)
 	srcRect.x = 0;
 	srcRect.y = 0;
 
-	SDL_RenderCopy(renderer, _texture, &srcRect, &dstRect);  
+	//SDL_RenderCopy(renderer, _texture, &srcRect, &dstRect);
+	SDL_RenderCopyEx(renderer, _texture, &srcRect, &dstRect, _angle, &_center, _flip);
 }
 
 void Image::drawEx(SDL_Surface* surface, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) const
@@ -116,6 +132,15 @@ void Image::drawEx(SDL_Surface* surface, int x1, int y1, int w1, int h1, int x2,
 		srcrect.w = w2;
 		srcrect.h = h2;
 
-		SDL_BlitSurface(_surface, &srcrect, surface, &desrect);
+		if(w1 == w2 && h1 == h2)
+		{
+			SDL_BlitSurface(_surface, &srcrect, surface, &desrect);
+		}
+		else
+		{
+			// @todo SDL_BlitScaled PNGÍ¼Æ¬Ê§°Ü
+			//SDL_BlitScaled(_surface, &srcrect, surface, &desrect);
+			SDL_BlitSurface(_surface, &srcrect, surface, &desrect);
+		}
 	}
 }

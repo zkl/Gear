@@ -4,7 +4,7 @@
 Object::Object() : 
 	m_parent(0),
 	_visiable(true),
-	_actived(false),
+	_actived(true),
 	_x(0),
 	_y(0)
 {
@@ -34,6 +34,19 @@ bool Object::appendChild(Object * child)
 	child->m_parent = this;
 	m_children.push_back(child);
 	return false;
+}
+
+bool Object::init()
+{
+	bool ok = true;;
+	std::vector<Object *>::iterator it = m_children.begin();
+	while(it != m_children.end())
+	{
+		if(!(*it++)->init())
+			ok = false;
+	}
+
+	return ok;
 }
 
 void Object::draw(SDL_Renderer * renderer)

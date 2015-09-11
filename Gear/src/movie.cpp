@@ -10,8 +10,7 @@ void Movie::addFrames(Image* image, int x, int y, int w, int h,
 		img->resize(w, h);
 		img->copy(*image, x+(i%column)*w, y+(i/column)*h, w, h);
 		this->addFrame(img);
-		img->def();
 
-		printf("add frames\n");
+		img->def();
 	}
 }

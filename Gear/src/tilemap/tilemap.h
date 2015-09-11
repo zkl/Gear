@@ -20,7 +20,7 @@ public:
 	bool load(const char * file);
 	void move(int x, int y);
 
-	int getGid(int row, int colum);
+	int getGid(int x, int y);
 
 	// 宽度和高度(单位像素)
 	int width();
@@ -58,8 +58,10 @@ inline void TileMap::move(int x, int y)
 	_y += y;
 }
 
-inline int TileMap::getGid(int row, int colum)
+inline int TileMap::getGid(int x, int y)
 {
+	int row = y/_tileHeight;
+	int colum = x/_tileWidth;
 	int position = row * _w + colum;
 	int gid = 0;
 

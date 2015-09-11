@@ -22,7 +22,7 @@ public:
 	Object * parent(){return m_parent;}
 
 	virtual void draw(SDL_Renderer * renderer);
-	virtual bool init(){return false;}
+	virtual bool init();
 	virtual void update(unsigned int dt);
 
 protected:
