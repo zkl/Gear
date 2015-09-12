@@ -4,25 +4,30 @@
 #include <map>
 #include <vector>
 
+class TileMap;
+
 class AStar
 {
 public:
-	AStar(int w, int h);
+	AStar(int width, int height);
 
 	void setStart(int x, int y);
 	void setStop (int x, int y);
-	bool find(std::vector<int, int>& path);
+	bool find(std::vector<int, int>& path, TileMap* tilemap);
 
 private:
-	struct AStarPoint
-	{
-		int position; // position = x*width +y;
-	};
+	int _width;
+	int _height;
 
-	int width;
-	int height;
-	std::map<int, AStarPoint> _opened;
-	std::map<int, AStarPoint> _closeed;
+	// position = x*width + y;
+	typedef int Position;
+
+	Position _start; 
+	Position _stop;
+
+	// F -> position
+	std::map<int, Position> _opened;
+	std::map<int, Position> _closeed;
 };
 
 #endif

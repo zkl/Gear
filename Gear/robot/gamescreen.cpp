@@ -33,7 +33,8 @@ void GameScreen::handleEvent(const SDL_Event& event)
 	{	
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			_target.setPosition(event.motion.x, event.motion.y);
+			_target.setPosition(event.motion.x-event.motion.x%_tilemap.tilsetWidth() ,
+				event.motion.y-event.motion.y%_tilemap.tilsetHeight());
 			break;
 		}
 		case SDL_MOUSEMOTION:

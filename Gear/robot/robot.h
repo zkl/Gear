@@ -54,15 +54,9 @@ inline void Robot::setGridSize(int width, int height)
 	_height = height;
 }
 
-
-inline void Robot::draw(SDL_Renderer * renderer)
+inline bool Robot::moving()
 {
-	_image.draw(renderer, _x, _y);
-}
-
-inline bool moving()
-{
-	return _currentDirection == DIR_STOP && _direction == DIR_STOP;
+	return _currentDirection != DIR_STOP;
 }
 
 #endif

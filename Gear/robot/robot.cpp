@@ -69,6 +69,11 @@ void Robot::update(unsigned int dt)
 	}
 }
 
+void Robot::draw(SDL_Renderer * renderer)
+{
+	_image.draw(renderer, _x, _y);
+}
+
 void Robot::move()
 {
 	if(!moving())

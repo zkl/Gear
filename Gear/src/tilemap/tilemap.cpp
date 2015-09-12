@@ -171,4 +171,6 @@ void TileMap::drawlayer(Layer * layer)
 void TileMap::draw(SDL_Renderer * renderer)
 {
 	_image.draw(renderer, _x, _y);
+
+	Object::draw(renderer);
 }

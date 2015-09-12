@@ -19,22 +19,23 @@ class TileMap : public Object
 public:
 	TileMap();
 	~TileMap();
+	
+	// @todo 
+	virtual bool blocked(int x, int y, int role);
 
 	bool load(const char * file);
 	void move(int x, int y);
-
-	int getGid(int x, int y);
+	int  getGid(int x, int y);
 
 	// 宽度和高度(单位像素)
-	int width();
-	int height();
-	int tilsetWidth();
-	int tilsetHeight();
-	int tilsetColum();
-	int tilsetRow();
+	int  width();
+	int  height();
+	int  tilsetWidth();
+	int  tilsetHeight();
+	int  tilsetColum();
+	int  tilsetRow();
 
-	virtual void draw(SDL_Renderer * renderer);
-
+	void draw(SDL_Renderer * renderer);
 private:
 	void analyzeMapInfo(XMLElement * element);
 	void analyzeTileset(XMLElement * element);
@@ -78,6 +79,11 @@ inline int TileMap::getGid(int x, int y)
 		gid = _layers[i]->getGid(position);
 
 	return gid;
+}
+
+bool TileMap::blocked(int x, int y, int role)
+{
+	return false;
 }
 
 inline int TileMap::width()
