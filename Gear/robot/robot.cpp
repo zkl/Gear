@@ -47,13 +47,13 @@ void Robot::setTileMap(TileMap* tilemap)
 
 bool Robot::init()
 {
-	_speed = 12;
+	_speed = 15;
+	_step  = 1;
 	_uptime = 0;
-
 	_direction = DIR_STOP;
 	_currentDirection = _direction;
 
-	_image.load("block.png");
+	_image.load("tank.png");
 
 	return true;
 }
@@ -61,7 +61,6 @@ bool Robot::init()
 void Robot::update(unsigned int dt)
 {
 	_uptime += dt;
-
 	if(_uptime > _speed)
 	{
 		_uptime -= _speed;
@@ -80,11 +79,28 @@ void Robot::move()
 		return ;
 
 	int x = _x, y = _y;
-	_currentDirection == DIR_LEFT ? _x -= 1 : 0;
-	_currentDirection == DIR_RIGHT ? _x += 1 : 0;
-	_currentDirection == DIR_UP ? _y -= 1 : 0;
-	_currentDirection == DIR_DOWN ? _y += 1 : 0;
-
+	
+	if(_currentDirection == DIR_LEFT)
+	{
+		_image.rotation(270);
+		_x -= _step;
+	}
+	else if(_currentDirection == DIR_RIGHT)
+	{
+		_image.rotation(90);
+		_x += _step;
+	}
+	else if(_currentDirection == DIR_UP)
+	{
+		_image.rotation(0);
+		_y -= _step;
+	}
+	else if(_currentDirection == DIR_DOWN)
+	{
+		_image.rotation(180);
+		_y += _step;
+	}
+	
 	if(blocked() || (_x%_width == 0 && _y%_height == 0))
 	{
 		_currentDirection = _direction;

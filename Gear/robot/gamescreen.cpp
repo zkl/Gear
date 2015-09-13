@@ -1,4 +1,6 @@
+#include "../src/route/astar/astar.h"
 #include "gamescreen.h"
+#include <stdlib.h>
 
 bool GameScreen::init()
 {
@@ -6,25 +8,91 @@ bool GameScreen::init()
 	_robot.setTileMap(&_tilemap);
 
 	_world.appendChild(&_tilemap);
-	_world.appendChild(&_robot);
 	_world.appendChild(&_target);
+	_world.appendChild(&_robot);
+	_world.appendChild(&_bob);
 	_world.init();
 
-	Image* frame = new Image("block.png");
-	_target.addFrame(frame);
-	frame->def();
+	_route.resize(_tilemap.tilsetColum(), _tilemap.tilsetRow());
 
+	
+	Image image("target.png");
+	_target.addFrames(&image, 0, 0, 16, 16, 6, 6);
+
+	Image bobimg("bob.png");
+	_bob.addFrames(&bobimg, 0, 0, 64, 64, 6, 6);
+	_bob.setFps(15);
+	
+	_target.loop();
+	_target.play();
+	_target.setFps(15);
+
+	srand(time(0));
 	return true;
 }
 
 void GameScreen::update(unsigned int dt)
 {
 	_world.update(dt);
+	
+	if(!_robot.moving() && _route.way().size() > 0)
+	{
+		if(_robot.x() < _route.way()[0]->x*_tilemap.tilsetWidth())
+			_robot.turnRight();
+		else if(_robot.x() > _route.way()[0]->x*_tilemap.tilsetWidth())
+			_robot.turnLeft();
+
+		if(_robot.y() < _route.way()[0]->y*_tilemap.tilsetHeight())
+			_robot.turnDown();
+		else if(_robot.y() > _route.way()[0]->y*_tilemap.tilsetHeight())
+			_robot.turnUp();
+
+		_route.way().erase(_route.way().begin());
+
+		if(_route.way().size() == 0)
+		{
+
+			int w = _tilemap.tilsetWidth();
+			int h = _tilemap.tilsetHeight();
+
+			while(1)
+			{
+				int x = rand()%_tilemap.width();
+				int y = rand()%_tilemap.height();
+				while(_tilemap.getGid(x, y) != 0)
+				{
+					// 在附近生成目标
+					x = rand()%(_tilemap.width()/4)+_robot.x()-_tilemap.width()/4;
+					y = rand()%(_tilemap.height()/4)+_robot.y()-_tilemap.height()/4;
+	
+					x = x > _tilemap.width()? _tilemap.width() : x;
+					y = y > _tilemap.height()? _tilemap.height() : y;
+					x = x < 0? 0 : x;
+					y = y < 0? 0 : y;
+				}
+
+				_target.setPosition(x-x%w, y-y%h);
+
+				_route.begin (_robot.x()/w, _robot.y()/h);
+				_route.target(_target.x()/w, _target.y()/w);
+
+				_bob.setPosition(_robot.x()-32+8, _robot.y()-32+8);
+				_bob.setVisiable();
+				_bob.play();
+
+				if(_route.find(&_tilemap))
+					break;
+			}
+		}
+	}
+
+	if(!_bob.playing())
+		_bob.setVisiable(false);
 }
 
-void GameScreen::draw(SDL_Renderer* render)
+void GameScreen::draw(SDL_Renderer* renderer)
 {
-	_world.draw(render);
+	_world.draw(renderer);
 }
 
 void GameScreen::handleEvent(const SDL_Event& event)
@@ -33,8 +101,17 @@ void GameScreen::handleEvent(const SDL_Event& event)
 	{	
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			_target.setPosition(event.motion.x-event.motion.x%_tilemap.tilsetWidth() ,
-				event.motion.y-event.motion.y%_tilemap.tilsetHeight());
+			int w = _tilemap.tilsetWidth();
+			int h = _tilemap.tilsetHeight();
+			int x = event.motion.x;
+			int y = event.motion.y;
+
+			_target.setPosition(x-x%w, y-y%h);
+
+			_route.begin (_robot.x()/w, _robot.y()/h);
+			_route.target(_target.x()/w, _target.y()/w);
+			_route.find(&_tilemap);
+
 			break;
 		}
 		case SDL_MOUSEMOTION:

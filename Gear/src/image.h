@@ -32,7 +32,6 @@ public:
 
 private:
 	bool _update;
-
 	double _angle;
 	SDL_Point _center;
 	SDL_RendererFlip _flip;
@@ -52,7 +51,6 @@ inline Image::Image() :
 }
 
 inline Image::Image(const char* file) : 
-	_surface(0),
 	_texture(0),
 	_update(true)
 {
@@ -66,8 +64,11 @@ inline bool Image::load(const char* file)
 
 	_update = true;
 	_surface = IMG_Load(file);
-	if(_surface != 0)
+	if(_surface == 0)
+	{
+		printf("Image::load -> %s\n", file);
 		return false;
+	}
 
 	_center.x = _surface->w / 2;
 	_center.y = _surface->h / 2;

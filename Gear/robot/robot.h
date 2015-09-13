@@ -18,6 +18,7 @@ public:
 	bool moving();
 	void setTileMap(TileMap* tilemap);
 	void setGridSize(int width, int height);
+
 	virtual void draw(SDL_Renderer * renderer);
 	virtual bool init();
 	virtual void update(unsigned int dt);
@@ -39,6 +40,7 @@ private:
 	Direction _currentDirection;
 
 	int _speed;
+	int _step;
 	int _uptime;
 
 	int _width;

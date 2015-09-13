@@ -26,6 +26,7 @@ public:
 	bool load(const char * file);
 	void move(int x, int y);
 	int  getGid(int x, int y);
+	int  getGridGid(int colum, int row);
 
 	// 宽度和高度(单位像素)
 	int  width();
@@ -67,22 +68,26 @@ inline void TileMap::move(int x, int y)
 
 inline int TileMap::getGid(int x, int y)
 {
-	if(_tileWidth == 0 || _tileHeight == 0)
-		SDL_Log("map error");
-
 	int row = y/_tileHeight;
 	int colum = x/_tileWidth;
-	int position = row * _w + colum;
-	int gid = 0;
+	return this->getGridGid(colum, row);
+}
 
+inline int TileMap::getGridGid(int colum, int row)
+{
+	int gid = 0;
+	int position = row * _w + colum;
 	for(unsigned int i=0; i<_layers.size() && gid == 0; i++)
 		gid = _layers[i]->getGid(position);
 
 	return gid;
 }
 
-bool TileMap::blocked(int x, int y, int role)
+inline bool TileMap::blocked(int x, int y, int role)
 {
+	if(getGid(x, y) != 0)
+		return true;
+
 	return false;
 }
 

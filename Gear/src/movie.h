@@ -12,7 +12,7 @@ public:
 	void stop();
 	bool playing();
 	void loop(bool loop = true);
-	void speed(int interval);
+	void setFps(int fps);
 	void addFrame(Image* frame);
 	void addFrames(Image* image, int x, int y, int w, int h,
 		int column, int frames);
@@ -26,7 +26,7 @@ private:
 	bool _playing;
 	int  _frame;
 	int _uptime;
-	int _fps;
+	int _interval;
 	std::vector<Image *> _frames;
 };
 
@@ -36,7 +36,7 @@ inline Movie::Movie() :
 	_playing(false),
 	_frame(0),
 	_uptime(0),
-	_fps(16)
+	_interval(1000/60)
 {
 }
 inline void Movie::play()
@@ -59,9 +59,9 @@ inline void Movie::loop(bool loop)
 	_loop = loop;
 }
 
-inline void Movie::speed(int interval)
+inline void Movie::setFps(int fps)
 {
-	_fps = interval;
+	_interval = 1000 / fps;
 }
 
 inline void Movie::draw(SDL_Renderer* renderer)
@@ -87,9 +87,9 @@ inline void Movie::update(unsigned int dt)
 		return ;
 
 	_uptime += dt;
-	if(_uptime >= 1000/_fps)
+	if(_uptime >= _interval)
 	{
-		_uptime = 0;
+		_uptime -= _interval;
 		if((unsigned int)++_frame >= _frames.size())
 		{
 			_frame = 0;
