@@ -1,4 +1,4 @@
-#include "../src/sdlgame.h"
+#include "src/sdlgame.h"
 #include "gamescreen.h"
 
 int main(int argc, char * argv[])

@@ -1,10 +1,11 @@
-#include "../src/route/astar/astar.h"
+#include "src/route/astar/astar.h"
 #include "gamescreen.h"
 #include <stdlib.h>
+#include <time.h>
 
 bool GameScreen::init()
 {
-	_tilemap.load("game.tmx");
+	_tilemap.load("map.tmx");
 	_robot.setTileMap(&_tilemap);
 
 	_world.appendChild(&_tilemap);
@@ -15,7 +16,6 @@ bool GameScreen::init()
 
 	_route.resize(_tilemap.tilsetColum(), _tilemap.tilsetRow());
 
-	
 	Image image("target.png");
 	_target.addFrames(&image, 0, 0, 16, 16, 6, 6);
 

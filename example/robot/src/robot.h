@@ -1,9 +1,9 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "../src/object.h"
-#include "../src/image.h"
-#include "../src/tilemap/tilemap.h"
+#include "src/object.h"
+#include "src/image.h"
+#include "src/tilemap/tilemap.h"
 
 class Robot : public Object
 {

@@ -1,28 +1,8 @@
-#ifndef SNAKE_GAME_H
-#define SNAKE_GAME_H
+#include "gamescreen.h"
 
-#include "../src/screen.h"
-#include "../src/world.h"
-#include "../src/tilemap/tilemap.h"
-#include "snake.h"
-
-class SnakeGame : public Screen
+bool GameScreen::init()
 {
-public:
-	virtual bool init();
-	virtual void draw(SDL_Renderer* render);
-	virtual void update(unsigned int dt);
-	virtual void handleEvent(const SDL_Event& event);
-
-private:
-	Snake _snake;
-	World _world;
-	TileMap _tilemap;
-};
-
-inline bool SnakeGame::init()
-{
-	_tilemap.load("game.tmx");
+	_tilemap.load("map.tmx");
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_snake);
 	_world.init();
@@ -35,12 +15,7 @@ inline bool SnakeGame::init()
 	return true;
 }
 
-inline void SnakeGame::draw(SDL_Renderer* render)
-{
-	_world.draw(render);
-}
-
-inline void SnakeGame::update(unsigned int dt)
+void GameScreen::update(unsigned int dt)
 {
 	_world.update(dt);
 	if(_snake.dead() || 
@@ -51,7 +26,12 @@ inline void SnakeGame::update(unsigned int dt)
 	}
 }
 
-inline void SnakeGame::handleEvent(const SDL_Event& event)
+void GameScreen::draw(SDL_Renderer* render)
+{
+	_world.draw(render);
+}
+
+void GameScreen::handleEvent(const SDL_Event& event)
 {
 	switch (event.type)
 	{
@@ -75,11 +55,20 @@ inline void SnakeGame::handleEvent(const SDL_Event& event)
 			if(sta[SDL_SCANCODE_D])
 				_snake.turnRight();
 
+			if(sta[SDL_SCANCODE_R])
+			{
+				_snake.setActive();
+				_snake.setPosition(0, 0);
+
+				_snake.init();
+				_snake.uplevel();
+				_snake.uplevel();
+				_snake.uplevel();
+				_snake.uplevel();
+			}
 			break;
 		}
 	default:
 		break;
 	}
 }
-
-#endif

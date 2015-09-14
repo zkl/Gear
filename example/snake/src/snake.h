@@ -1,8 +1,8 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-#include "../src/object.h"
-#include "../src/image.h"
+#include "src/object.h"
+#include "src/image.h"
 
 class Snake : public Object
 {
@@ -17,8 +17,9 @@ public:
 	void turnDown();
 
 	void setGridSize(int width, int height);
-	virtual void draw(SDL_Renderer * renderer);
+
 	virtual bool init();
+	virtual void draw(SDL_Renderer * renderer);
 	virtual void update(unsigned int dt);
 
 private:
@@ -115,7 +116,9 @@ inline bool Snake::init()
 	_snake.clear();
 	_direction = DIR_RIGHT;
 	_currentDirection = _direction;
-	_image.load("block.png");
+
+	if(_image.empty())
+		_image.load("block.png");
 
 	SnakeNode node;
 	node.x = _x;

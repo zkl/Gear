@@ -1,11 +1,11 @@
 #ifndef GAME_SCREEN_H
 #define GAME_SCREEN_H
 
-#include "../src/tilemap/tilemap.h"
-#include "../src/route/astar/astar.h"
-#include "../src/screen.h"
-#include "../src/world.h"
-#include "../src/movie.h"
+#include "src/tilemap/tilemap.h"
+#include "src/route/astar/astar.h"
+#include "src/screen.h"
+#include "src/world.h"
+#include "src/movie.h"
 #include "robot.h"
 
 class GameScreen : public Screen

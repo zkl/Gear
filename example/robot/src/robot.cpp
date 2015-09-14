@@ -53,7 +53,7 @@ bool Robot::init()
 	_direction = DIR_STOP;
 	_currentDirection = _direction;
 
-	_image.load("tank.png");
+	_image.load("robot.png");
 
 	return true;
 }
