@@ -236,3 +236,7 @@ $RECYCLE.BIN/
 
 # vim swap file
 *.swp
+
+# build_linux 资源文件
+
+build_linux

@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Gear">
+      <UniqueIdentifier>{27a92f8b-0d39-4dd8-a954-3e67dd0d54c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gear\Route">
+      <UniqueIdentifier>{b244db26-21d6-4bc7-bacc-3af48a2758d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gear\Route\AStar">
+      <UniqueIdentifier>{db01cc24-4655-4158-a9c1-2d4ecff95444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gear\Tilemap">
+      <UniqueIdentifier>{2fe4e954-a121-4f8e-9fc2-e0343aedcc44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gear\Ai">
+      <UniqueIdentifier>{903baeae-9b48-428a-916f-a6d548739680}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\animate.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\animation.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\color.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\director.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\drawable.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\image.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\movie.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\object.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\objectpool.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ref.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\resourcemanager.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\runner.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\screen.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\sdlgame.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\sprite.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\spritesheet.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\timer.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\world.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\tilemap\tileset.h">
+      <Filter>Gear\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\tilemap\imagelayer.h">
+      <Filter>Gear\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\tilemap\layer.h">
+      <Filter>Gear\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\tilemap\tilemap.h">
+      <Filter>Gear\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\route\astar\astar.h">
+      <Filter>Gear\Route\AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gamescreen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ai\neural.h">
+      <Filter>Gear\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ai\neuralnet.h">
+      <Filter>Gear\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ai\genalg.h">
+      <Filter>Gear\Ai</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\animate.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\animation.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\color.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\image.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\movie.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\object.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\objectpool.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\runner.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\sdlgame.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\sprite.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\spritesheet.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\world.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\tilemap\imagelayer.cpp">
+      <Filter>Gear\Tilemap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\tilemap\layer.cpp">
+      <Filter>Gear\Tilemap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\tilemap\tilemap.cpp">
+      <Filter>Gear\Tilemap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\tilemap\tileset.cpp">
+      <Filter>Gear\Tilemap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\route\astar\astar.cpp">
+      <Filter>Gear\Route\AStar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gamescreen.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ai\neural.cpp">
+      <Filter>Gear\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ai\genalg.cpp">
+      <Filter>Gear\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ai\neuralnet.cpp">
+      <Filter>Gear\Ai</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
