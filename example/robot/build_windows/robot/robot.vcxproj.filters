@@ -25,6 +25,9 @@
     <Filter Include="Gear\Tilemap">
       <UniqueIdentifier>{2fe4e954-a121-4f8e-9fc2-e0343aedcc44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gear\Ai">
+      <UniqueIdentifier>{903baeae-9b48-428a-916f-a6d548739680}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\animate.h">
@@ -102,6 +105,15 @@
     <ClInclude Include="..\..\src\gamescreen.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ai\neural.h">
+      <Filter>Gear\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ai\neuralnet.h">
+      <Filter>Gear\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\ai\genalg.h">
+      <Filter>Gear\Ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\animate.cpp">
@@ -163,6 +175,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\robot.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ai\neural.cpp">
+      <Filter>Gear\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ai\genalg.cpp">
+      <Filter>Gear\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\ai\neuralnet.cpp">
+      <Filter>Gear\Ai</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

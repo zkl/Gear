@@ -82,6 +82,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\ai\genalg.h" />
+    <ClInclude Include="..\..\..\..\src\ai\neural.h" />
+    <ClInclude Include="..\..\..\..\src\ai\neuralnet.h" />
     <ClInclude Include="..\..\..\..\src\animate.h" />
     <ClInclude Include="..\..\..\..\src\animation.h" />
     <ClInclude Include="..\..\..\..\src\color.h" />
@@ -109,6 +112,9 @@
     <ClInclude Include="..\..\src\robot.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\ai\genalg.cpp" />
+    <ClCompile Include="..\..\..\..\src\ai\neural.cpp" />
+    <ClCompile Include="..\..\..\..\src\ai\neuralnet.cpp" />
     <ClCompile Include="..\..\..\..\src\animate.cpp" />
     <ClCompile Include="..\..\..\..\src\animation.cpp" />
     <ClCompile Include="..\..\..\..\src\color.cpp" />
