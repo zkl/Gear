@@ -19,7 +19,7 @@ double Neural::Sigmoid(double input, double response)
 double Neural::calculate(const std::vector<double>& input)
 {
 	double netinput = 0;
-	int i = 0;
+	unsigned int i = 0;
 
 	for(i = 0; i<_weight.size()-1 && i<input.size(); i++)
 		netinput += _weight[i] * input[i];

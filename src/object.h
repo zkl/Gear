@@ -26,7 +26,8 @@ public:
 	virtual void update(unsigned int dt);
 
 protected:
-	int _x, _y;
+	int _x, _y;   // 当前位置
+	int _px, _py; // 上一次的位置 
 
 private:
 	void removeChild(Object * child);

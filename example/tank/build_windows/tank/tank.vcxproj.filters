@@ -99,12 +99,6 @@
     <ClInclude Include="..\..\..\..\src\route\astar\astar.h">
       <Filter>Gear\Route\AStar</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\robot.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\gamescreen.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\ai\neural.h">
       <Filter>Gear\Ai</Filter>
     </ClInclude>
@@ -113,6 +107,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\ai\genalg.h">
       <Filter>Gear\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\bullet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\control.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gamescreen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\tank.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -167,15 +173,6 @@
     <ClCompile Include="..\..\..\..\src\route\astar\astar.cpp">
       <Filter>Gear\Route\AStar</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\gamescreen.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\robot.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\ai\neural.cpp">
       <Filter>Gear\Ai</Filter>
     </ClCompile>
@@ -184,6 +181,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\ai\neuralnet.cpp">
       <Filter>Gear\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\bullet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\control.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gamescreen.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\tank.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

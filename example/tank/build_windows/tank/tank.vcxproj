@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{65803F8E-1AB4-49B0-B0F0-F65BB27ED717}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>robot</RootNamespace>
+    <RootNamespace>tank</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -108,8 +108,10 @@
     <ClInclude Include="..\..\..\..\src\tilemap\tileset.h" />
     <ClInclude Include="..\..\..\..\src\timer.h" />
     <ClInclude Include="..\..\..\..\src\world.h" />
+    <ClInclude Include="..\..\src\bullet.h" />
+    <ClInclude Include="..\..\src\control.h" />
     <ClInclude Include="..\..\src\gamescreen.h" />
-    <ClInclude Include="..\..\src\robot.h" />
+    <ClInclude Include="..\..\src\tank.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\ai\genalg.cpp" />
@@ -132,9 +134,11 @@
     <ClCompile Include="..\..\..\..\src\tilemap\tilemap.cpp" />
     <ClCompile Include="..\..\..\..\src\tilemap\tileset.cpp" />
     <ClCompile Include="..\..\..\..\src\world.cpp" />
+    <ClCompile Include="..\..\src\bullet.cpp" />
+    <ClCompile Include="..\..\src\control.cpp" />
     <ClCompile Include="..\..\src\gamescreen.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
-    <ClCompile Include="..\..\src\robot.cpp" />
+    <ClCompile Include="..\..\src\tank.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

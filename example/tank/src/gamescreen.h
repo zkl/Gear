@@ -8,6 +8,7 @@
 #include "src/movie.h"
 #include "tank.h"
 #include "bullet.h"
+#include "control.h"
 
 class GameScreen : public Screen
 {
@@ -18,12 +19,9 @@ public:
 	virtual void handleEvent(const SDL_Event& event);
 
 private:
-	Bullet _bullet;
-	Movie _target;
-	Movie _bob;
 	World _world;
-	AStar _route;
 	TileMap _tilemap;
+	Control _control;
 };
 
 

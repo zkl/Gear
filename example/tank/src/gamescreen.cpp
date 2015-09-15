@@ -8,34 +8,19 @@ bool GameScreen::init()
 	_tilemap.load("map.tmx");
 
 	_world.appendChild(&_tilemap);
-	_world.appendChild(&_target);
-	_world.appendChild(&_bob);
-	_world.appendChild(&_bullet);
 	_world.init();
 
-	_route.resize(_tilemap.tilsetColum(), _tilemap.tilsetRow());
+	_control.setWorld(&_world);
+	_control.setMap(&_tilemap);
 
-	Image image("target.png");
-	_target.addFrames(&image, 0, 0, 16, 16, 6, 6);
-
-	Image bobimg("bob.png");
-	_bob.addFrames(&bobimg, 0, 0, 64, 64, 6, 6);
-	_bob.setFps(15);
-	
-	_target.loop();
-	_target.play();
-	_target.setFps(15);
-
-
-	_bullet.setPosition(100, 100);
-
-	srand(time(0));
+	srand((unsigned int)time(0));
 	return true;
 }
 
 void GameScreen::update(unsigned int dt)
 {
 	_world.update(dt);
+	_control.update(dt);
 }
 
 void GameScreen::draw(SDL_Renderer* renderer)
@@ -53,8 +38,6 @@ void GameScreen::handleEvent(const SDL_Event& event)
 			int h = _tilemap.tilsetHeight();
 			int x = event.motion.x;
 			int y = event.motion.y;
-
-			_target.setPosition(x-x%w, y-y%h);
 			break;
 		}
 		case SDL_MOUSEMOTION:
@@ -66,8 +49,7 @@ void GameScreen::handleEvent(const SDL_Event& event)
 			const Uint8* sta = SDL_GetKeyboardState(0);
 			if(sta[SDL_SCANCODE_T])
 			{
-				_bullet.setPosition(100, 100);
-				_bullet.emit(0);
+				_control.createTank(256, 256);
 			}
 
 			break;
