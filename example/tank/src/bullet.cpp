@@ -1,18 +1,30 @@
+#include "tank.h"
 #include "bullet.h"
 
 Bullet::Bullet() : 
-	_uptime(0),
+	_bobing(false),
 	_interval(5),
-	_bobing(false)
+	_uptime(0)
 {
+	_bob.setActive(false);
+	_bob.setVisiable(false);
 }
 
 void Bullet::emit(int direction)
 {
-	_direction = direction;
-
 	this->setVisiable();
 	this->setActive();
+
+	_direction = direction;
+	
+	if(_direction == DIR_RIGHT)
+		_image.rotation(0);
+	else if(_direction == DIR_LEFT)
+		_image.rotation(180);
+	else if(_direction == DIR_UP)
+		_image.rotation(270);
+	else if(_direction == DIR_DOWN)
+		_image.rotation(90);
 }
 
 void Bullet::bob()
@@ -32,7 +44,7 @@ bool Bullet::init()
 
 	_bob.setActive(false);
 	_bob.setVisiable(false);
-	_bob.setFps(5);
+	_bob.setFps(10);
 
 	_image.load("bullet.png");
 	return !_image.empty();
@@ -49,11 +61,16 @@ void Bullet::draw(SDL_Renderer * renderer)
 void Bullet::update(unsigned int dt)
 {
 	Object::update(dt);
+
 	if(_bobing)
 	{
 		if(!_bob.playing())
 		{
 			_bobing = false;
+
+			_bob.setActive(false);
+			_bob.setVisiable(false);
+
 			this->setActive(false);
 			this->setVisiable(false);
 		}
@@ -66,17 +83,19 @@ void Bullet::update(unsigned int dt)
 		_uptime -= _interval;
 		switch(_direction)
 		{
-		case 0:
+		case DIR_RIGHT:
 			_x += 1;
 			break;
-		case 1:
+		case DIR_LEFT:
 			_x -= 1;
 			break;
-		case 2:
+		case DIR_DOWN:
 			_y += 1;
 			break;
-		case 3:
+		case DIR_UP:
 			_y -= 1;
+			break;
+		default:
 			break;
 		}
 	}

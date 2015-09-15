@@ -60,6 +60,7 @@ void Control::createTank(int x, int y)
 	Tank* tank = new Tank();
 	tank->init();
 	tank->setPosition(x, y);
+
 	_tanks.push_back(tank);
 	_world->appendChild(tank);
 }

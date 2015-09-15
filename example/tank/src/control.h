@@ -33,8 +33,10 @@ inline void Control::setMap(TileMap* tilemap)
 {
 	_tilemap = tilemap;
 }
+
 inline void Control::setWorld(World* world)
 {
 	_world = world;
 }
+
 #endif

@@ -4,6 +4,16 @@
 #include "src/object.h"
 #include "src/image.h"
 #include "src/tilemap/tilemap.h"
+#include "bullet.h"
+
+enum Direction
+{
+	DIR_LEFT,
+	DIR_RIGHT,
+	DIR_UP,
+	DIR_DOWN,
+	DIR_STOP
+};
 
 class Tank : public Object
 {
@@ -14,10 +24,14 @@ public:
 	void turnRight();
 	void turnUp();
 	void turnDown();
+	void fire();
+
+	void moveForword();
+	void turn(Direction direction);
+	Direction direction();
 
 	bool moving();
 	void setTileMap(TileMap* tilemap);
-	void setGridSize(int width, int height);
 
 	virtual void draw(SDL_Renderer * renderer);
 	virtual bool init();
@@ -27,17 +41,8 @@ private:
 	void move();
 	bool blocked();
 
-	enum Direction
-	{
-		DIR_LEFT,
-		DIR_RIGHT,
-		DIR_UP,
-		DIR_DOWN,
-		DIR_STOP
-	};
-
+	bool _moving;
 	Direction _direction;
-	Direction _currentDirection;
 
 	int _speed;
 	int _step;
@@ -45,20 +50,20 @@ private:
 
 	int _width;
 	int _height;
+
 	Image _image;
 	TileMap* _tilemap;
+	std::vector<Bullet> _bullets;
 };
-
-
-inline void Tank::setGridSize(int width, int height)
-{
-	_width = width;
-	_height = height;
-}
 
 inline bool Tank::moving()
 {
-	return _currentDirection != DIR_STOP;
+	return _moving;
+}
+
+inline Direction Tank::direction()
+{
+	return _direction;
 }
 
 #endif

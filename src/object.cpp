@@ -42,8 +42,10 @@ bool Object::init()
 	std::vector<Object *>::iterator it = m_children.begin();
 	while(it != m_children.end())
 	{
-		if(!(*it++)->init())
+		if(!(*it)->init())
 			ok = false;
+
+		it++;
 	}
 
 	return ok;

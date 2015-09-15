@@ -21,8 +21,8 @@ public:
 	bool appendChild(Object * child);
 	Object * parent(){return m_parent;}
 
-	virtual void draw(SDL_Renderer * renderer);
 	virtual bool init();
+	virtual void draw(SDL_Renderer * renderer);
 	virtual void update(unsigned int dt);
 
 protected:

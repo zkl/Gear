@@ -7,7 +7,6 @@
 #include "src/world.h"
 #include "src/movie.h"
 #include "tank.h"
-#include "bullet.h"
 #include "control.h"
 
 class GameScreen : public Screen
@@ -19,9 +18,9 @@ public:
 	virtual void handleEvent(const SDL_Event& event);
 
 private:
+	Tank  _tank;
 	World _world;
 	TileMap _tilemap;
-	Control _control;
 };
 
 
