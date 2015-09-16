@@ -169,32 +169,29 @@ void Tank::move()
 	}
 
 
-	if(blocked() || (_x%_width == 0 && _y%_height == 0))
+	bool b = blocked();
+	if(b || (_x%_width == 0 && _y%_height == 0))
 	{
 		_moving = false;
-		if(blocked())
+		if(b)
 		{
 			_x = x;
 			_y = y;
 		}
 	}
 
-	int po = _tilemap->convertPositionFromCoordinate(x, y);
-	int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
-	int p2 = _tilemap->convertPositionFromCoordinate(x+15, y+15);
-	int p3 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
-	if(p1 != po)
+	if(!b )
 	{
+		int po = _tilemap->convertPositionFromCoordinate(x, y);
+		int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
+		int p2 = _tilemap->convertPositionFromCoordinate(x+15, y+15);
+		int p3 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+
 		_tilemap->setObject(po, 0);
 		_tilemap->setObject(p1, this);
-	}
-
-	if(p2 != p3)
-	{
 		_tilemap->setObject(p2, 0);
 		_tilemap->setObject(p3, this);
 	}
-	_tilemap->setObject(p2, this);
 }
 
 
