@@ -23,6 +23,9 @@ public:
 	void fire();
 	void blowUp();
 
+	void setGroup(int group);
+	int  getGroup();
+
 	void turnLeft();
 	void turnRight();
 	void turnUp();
@@ -44,10 +47,12 @@ private:
 	void move();
 	bool blocked();
 
+	bool _explorer;
 	bool _updatePosition;
 	bool _moving;
 	Direction _direction;
 
+	int _group;
 	int _speed;
 	int _step;
 	int _uptime;
@@ -86,16 +91,14 @@ inline void Tank::moveForword()
 	_moving = true;
 }
 
-
-inline void Tank::blowUp()
+inline void Tank::setGroup(int group)
 {
-	this->setVisiable(false);
-	this->setActive(false);
+	_group = group;
+}
 
-	int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
-	int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
-	_tilemap->setObject(p1, 0);
-	_tilemap->setObject(p2, 0);
+inline int  Tank::getGroup()
+{
+	return _group;
 }
 
 #endif

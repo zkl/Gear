@@ -1,7 +1,9 @@
 #include "tank.h"
 
 Tank::Tank() : 
+	_explorer(true),
 	_moving(false),
+	_group(0),
 	_uptime(0),
 	_width(16),
 	_height(16),
@@ -10,7 +12,7 @@ Tank::Tank() :
 	_unuserdBullets.reserve(3);
 	_bullets.reserve(3);
 
-	for(int i=0; i<2; i++)
+	for(int i=0; i<5; i++)
 		_unuserdBullets.push_back(new Bullet());
 
 	for(unsigned int i=0; i<_unuserdBullets.size(); i++)
@@ -64,27 +66,28 @@ void Tank::setTileMap(TileMap* tilemap)
 
 bool Tank::init()
 {
+	_explorer = true;
 	_moving = false;
 	_speed = 1000/60;
 	_step  = 2;
 	_uptime = 0;
 	_direction = DIR_UP;
-
 	_image.load("tank.png");
+
 	return Object::init();
 }
 
 void Tank::update(unsigned int dt)
 {
 	_uptime += dt;
-	while(_uptime > _speed)
+	if(_uptime > _speed)
 	{
 		_uptime = 0;
-		move();
+		if(_moving)
+			this->move();
 	}
 
 	Object::update(dt);
-
 
 	for(std::vector<Bullet*>::iterator it = _bullets.begin(); it !=_bullets.end();)
 	{
@@ -118,7 +121,7 @@ void Tank::update(unsigned int dt)
 
 			int position = _tilemap->convertPositionFromCoordinate(bullet.x(), bullet.y());
 			Tank* tank = (Tank*)_tilemap->getObject(position);
-			if(tank != 0 && tank != this)
+			if(tank != 0 && tank->getGroup() != this->getGroup())
 			{
 				bullet.explode();
 				tank->blowUp();
@@ -143,9 +146,6 @@ void Tank::draw(SDL_Renderer * renderer)
 
 void Tank::move()
 {
-	if(!_moving)
-		return ;
-
 	int x = _x, y = _y;
 	if(_direction == DIR_LEFT)
 	{
@@ -168,31 +168,38 @@ void Tank::move()
 		_y += _step;
 	}
 
-
-	bool b = blocked();
-	if(b || (_x%_width == 0 && _y%_height == 0))
+	if(_explorer)
 	{
-		_moving = false;
-		if(b)
+		if(blocked())
 		{
 			_x = x;
 			_y = y;
 		}
+		else
+		{
+			int p2 = _tilemap->convertPositionFromCoordinate(_x, _y);
+			int p3 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+			_tilemap->setObject(p2, this);
+			_tilemap->setObject(p3, this);
+		}
 	}
 
-	if(!b )
+	_explorer = false;
+	if(_x%_width == 0 && _y%_height == 0)
 	{
-		int po = _tilemap->convertPositionFromCoordinate(x, y);
-		int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
-		int p2 = _tilemap->convertPositionFromCoordinate(x+15, y+15);
-		int p3 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+		_explorer = true;
+		_moving = false;
 
-		_tilemap->setObject(po, 0);
-		_tilemap->setObject(p1, this);
-		_tilemap->setObject(p2, 0);
-		_tilemap->setObject(p3, this);
+		int p0 = _tilemap->convertPositionFromCoordinate(x, y);
+		int p1 = _tilemap->convertPositionFromCoordinate(x+15, y+15);
+		_tilemap->setObject(p0, 0);
+		_tilemap->setObject(p1, 0);
+
+		int p2 = _tilemap->convertPositionFromCoordinate(_x, _y);
+		_tilemap->setObject(p2, this);
 	}
 }
+
 
 
 bool Tank::blocked()
@@ -203,8 +210,24 @@ bool Tank::blocked()
 	if(x1 < 0 || y1 < 0 || x2 > _tilemap->width() || y2 > _tilemap->height())
 		return true;
 
+	int p = _tilemap->convertPositionFromCoordinate(_x, _y);
+	Tank* tank = (Tank*)_tilemap->getObject(p);
+	if(tank != this && tank != 0)
+		return true;
+
 	if(_tilemap->getGid(x1, y1) == 0 && _tilemap->getGid(x2-1, y2-1) == 0)
 		return false;
 
 	return true;
+}
+
+void Tank::blowUp()
+{
+	this->setVisiable(false);
+	this->setActive(false);
+
+	int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
+	int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+	_tilemap->setObject(p1, 0);
+	_tilemap->setObject(p2, 0);
 }

@@ -2,6 +2,7 @@
 #include "bullet.h"
 
 Bullet::Bullet() : 
+	_explorer(false),
 	_exploding(false),
 	_step(4),
 	_uptime(0)

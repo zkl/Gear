@@ -130,7 +130,7 @@ inline int TileMap::row()
 
 inline int TileMap::convertPositionFromCoordinate(int x, int y)
 {
-	return x/_w + (y/_h)*_tileWidth;
+	return x/_tileWidth + (y/_tileHeight)*_w;
 }
 
 inline void TileMap::setObject(int position, void* obj)

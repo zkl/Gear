@@ -12,9 +12,10 @@ bool GameScreen::init()
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_tank);
 
-	for(unsigned int i=0; i<6; i++)
+	for(unsigned int i=0; i<5; i++)
 	{
-		_robots.push_back(new Robot());
+		Robot* robot = new Robot();
+		_robots.push_back(robot);
 		_world.appendChild(_robots[i]);
 	}
 
@@ -26,13 +27,13 @@ bool GameScreen::init()
 	for(unsigned int i=0; i<_robots.size(); i++)
 		_robots[i]->setMap(&_tilemap);
 
-
 	return true;
 }
 
 void GameScreen::update(unsigned int dt)
 {
 	_world.update(dt);
+
 	if(!_tank.moving())
 	{
 		const Uint8* sta = SDL_GetKeyboardState(0);
@@ -68,9 +69,23 @@ void GameScreen::handleEvent(const SDL_Event& event)
 		{
 			const Uint8* sta = SDL_GetKeyboardState(0);
 			if(sta[::SDL_SCANCODE_SPACE])
-			{
 				_tank.fire();
+
+			if(sta[::SDL_SCANCODE_P])
+			{
+				for(unsigned int i=0; i<_robots.size(); i++)
+				{
+					_robots[i]->setActive(false);
+				}
 			}
+			else if(sta[::SDL_SCANCODE_G])
+			{
+				for(unsigned int i=0; i<_robots.size(); i++)
+				{
+					_robots[i]->setActive(true);
+				}
+			}
+
 			break;
 		}
 	default:

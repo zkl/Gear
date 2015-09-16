@@ -11,9 +11,6 @@ public:
 	Robot();
 
 	void setMap(TileMap* map);
-
-	void patrol();
-
 	virtual bool init();
 	virtual void update(unsigned int dt);
 
@@ -26,6 +23,7 @@ private:
 
 inline Robot::Robot()
 {
+	_tank.setGroup(1);
 	this->appendChild(&_tank);
 }
 

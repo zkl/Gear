@@ -19,6 +19,7 @@ public:
 	virtual void update(unsigned int dt);
 
 private:
+	bool _explorer;
 	bool _exploding;
 	int _step;
 	int _uptime;

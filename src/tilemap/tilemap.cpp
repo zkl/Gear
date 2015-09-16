@@ -47,7 +47,7 @@ void TileMap::analyzeMapInfo(tinyxml2::XMLElement * root)
 	const char * color = root->Attribute("backgroundcolor");
 	_bgColor.fromString(color);
 
-	_objects.resize(_tileWidth*_tileHeight);
+	_objects.resize(_w*_h);
 	_image.resize(_w*_tileWidth, _h*_tileHeight);
 	_image.fill(&_bgColor);
 }
