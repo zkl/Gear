@@ -19,7 +19,7 @@ public:
 	void setPosition(int x, int y);
 	void setVisiable(bool visiable = true);
 	bool appendChild(Object * child);
-	Object * parent(){return m_parent;}
+	Object * parent(){return _parent;}
 
 	virtual bool init();
 	virtual void draw(SDL_Renderer * renderer);
@@ -34,8 +34,8 @@ private:
 
 	bool _visiable;
 	bool _actived;
-	Object * m_parent;
-	std::vector <Object * > m_children;
+	Object * _parent;
+	std::vector <Object * > _children;
 };
 
 inline int Object::x() 

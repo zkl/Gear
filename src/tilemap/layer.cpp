@@ -13,9 +13,12 @@ int Layer::setGid(int postion, int gid)
 	if(it != _data.end())
 	{
 		ogid = it->second;
-		it->second = gid;
+		if(gid != 0)
+			it->second = gid;
+		else
+			_data.erase(it);
 	}
-	else
+	else if(gid != 0)
 	{
 		_data[postion] = gid;
 	}

@@ -25,7 +25,7 @@ void Control::update(int dt)
 		{
 			int gid = _tilemap->getGid(bullet->x(), bullet->y());
 			if(gid != 0)
-				bullet->bob();
+				bullet->explode();
 		}
 	}
 
@@ -49,7 +49,7 @@ void Control::update(int dt)
 			}
 
 			bullet->setPosition(tank->x(), tank->y());
-			bullet->emit(0);
+			bullet->launch(0);
 			_bullets.push_back(bullet);
 		}
 	}

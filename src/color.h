@@ -6,7 +6,7 @@
 class Color 
 {
 public:
-	Color() {_color.r = 0; _color.g = 0; _color.b = 0; _color.a = 0;}
+	Color() {_color.r = 0; _color.g = 0; _color.b = 0; _color.a = 255;}
 	unsigned short r();
 	unsigned short g();
 	unsigned short b();

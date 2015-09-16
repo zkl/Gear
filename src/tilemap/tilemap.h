@@ -27,6 +27,7 @@ public:
 	void move(int x, int y);
 	int  getGid(int x, int y);
 	int  getGridGid(int colum, int row);
+	bool setGid(int x, int y, int gid);
 
 	// 宽度和高度(单位像素)
 	int  width();

@@ -7,11 +7,14 @@ Tank::Tank() :
 	_height(16),
 	_tilemap(0)
 {
-	for(int i=0; i<10; i++)
-		_bullets.push_back(Bullet());
+	_unuserdBullets.reserve(3);
+	_bullets.reserve(3);
 
-	for(unsigned int i=0; i<_bullets.size(); i++)
-		this->appendChild(&_bullets[i]);
+	for(int i=0; i<2; i++)
+		_unuserdBullets.push_back(new Bullet());
+
+	for(unsigned int i=0; i<_unuserdBullets.size(); i++)
+		this->appendChild(_unuserdBullets[i]);
 }
 
 void Tank::turnLeft()
@@ -40,15 +43,15 @@ void Tank::turnDown()
 
 void Tank::fire()
 {
-	for(unsigned int i=0; i<_bullets.size(); i++)
-	{
-		if(!_bullets[i].actived())
-		{
-			_bullets[i].setPosition(_x, _y);
-			_bullets[i].emit(_direction);
-			break;
-		}
-	}
+	if(_unuserdBullets.size() == 0)
+		return ;
+
+	Bullet* bullet = _unuserdBullets[0];
+	bullet->setPosition(_x, _y);
+	bullet->launch(_direction);
+
+	_unuserdBullets.erase(_unuserdBullets.begin());
+	_bullets.push_back(bullet);
 }
 
 void Tank::setTileMap(TileMap* tilemap)
@@ -62,8 +65,8 @@ void Tank::setTileMap(TileMap* tilemap)
 bool Tank::init()
 {
 	_moving = false;
-	_speed = 15;
-	_step  = 1;
+	_speed = 1000/60;
+	_step  = 2;
 	_uptime = 0;
 	_direction = DIR_UP;
 
@@ -76,25 +79,49 @@ void Tank::update(unsigned int dt)
 	_uptime += dt;
 	while(_uptime > _speed)
 	{
-		_uptime -= _speed;
+		_uptime = 0;
 		move();
 	}
+
 	Object::update(dt);
 
-	for(unsigned int i=0; i<_bullets.size(); i++)
+
+	for(std::vector<Bullet*>::iterator it = _bullets.begin(); it !=_bullets.end();)
 	{
-		Bullet& bullet = _bullets[i];
-		if(bullet.actived() && !bullet.bobing())
+		Bullet& bullet = *(*it);
+		if(bullet.actived() && !bullet.exploding())
 		{
-			if(bullet.x() < 0 || bullet.x() > _tilemap->width() || 
-			   bullet.y() < 0 || bullet.y() > _tilemap->height())
+			if(bullet.x() < 0 || bullet.x()+15 > _tilemap->width() || 
+			   bullet.y() < 0 || bullet.y()+15 > _tilemap->height())
 			{
-				bullet.bob();
+				bullet.explode();
 			}
 
-			if(_tilemap->getGid(bullet.x(), bullet.y()) != 0 ||
-			   _tilemap->getGid(bullet.x()+8, bullet.y()+8) != 0)
-				bullet.bob();
+			int gid =_tilemap->getGid(bullet.x(), bullet.y());
+			if(gid != 0)
+			{
+				if(++gid > 4)
+					gid = 0;
+				_tilemap->setGid(bullet.x(), bullet.y(), gid);
+				bullet.explode();
+			}
+
+			gid = _tilemap->getGid(bullet.x()+15, bullet.y()+15);
+			if( gid != 0)
+			{
+				if(++gid > 4)
+					gid = 0;
+
+				_tilemap->setGid(bullet.x()+15, bullet.y()+15, gid);
+				bullet.explode();
+			}
+
+			it++;
+		}
+		else
+		{
+			_unuserdBullets.push_back(*it);
+			it = _bullets.erase(it);
 		}
 	}
 }
@@ -148,9 +175,13 @@ void Tank::move()
 bool Tank::blocked()
 {
 	int x1 = _x, y1 = _y;
-	int x2 = _x+_width-1, y2 = _y+_height-1;
-	if(_tilemap->getGid(x1, y1) == 0 && _tilemap->getGid(x2, y2) == 0)
+	int x2 = _x+_width, y2 = _y+_height;
+
+	if(x1 < 0 || y1 < 0 || x2 > _tilemap->width() || y2 > _tilemap->height())
+		return true;
+
+	if(_tilemap->getGid(x1, y1) == 0 && _tilemap->getGid(x2-1, y2-1) == 0)
 		return false;
-	
+
 	return true;
 }

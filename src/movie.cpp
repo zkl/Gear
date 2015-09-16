@@ -17,11 +17,8 @@ void Movie::addFrames(Image* image, int x, int y, int w, int h,
 
 void Movie::update(unsigned int dt)
 {
-	if(!_playing)
-		return ;
-
 	_uptime += dt;
-	while(_uptime >= _interval)
+	if(_uptime >= _interval)
 	{
 		_uptime -= _interval;
 		if((unsigned int)++_frame >= _frames.size())
@@ -31,4 +28,9 @@ void Movie::update(unsigned int dt)
 				_playing = false;
 		}
 	}
+}
+
+void Movie::draw(SDL_Renderer* renderer)
+{
+	_frames[_frame]->draw(renderer, _x, _y);
 }

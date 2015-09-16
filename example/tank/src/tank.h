@@ -1,5 +1,5 @@
-#ifndef ROBOT_H
-#define ROBOT_H
+#ifndef TANK_H 
+#define TANK_H 
 
 #include "src/object.h"
 #include "src/image.h"
@@ -20,11 +20,12 @@ class Tank : public Object
 public: 
 	Tank();
 	
+	void fire();
+
 	void turnLeft();
 	void turnRight();
 	void turnUp();
 	void turnDown();
-	void fire();
 
 	void moveForword();
 	void turn(Direction direction);
@@ -32,6 +33,7 @@ public:
 
 	bool moving();
 	void setTileMap(TileMap* tilemap);
+	TileMap* tilemap();
 
 	virtual void draw(SDL_Renderer * renderer);
 	virtual bool init();
@@ -53,12 +55,18 @@ private:
 
 	Image _image;
 	TileMap* _tilemap;
-	std::vector<Bullet> _bullets;
+	std::vector<Bullet*> _bullets;
+	std::vector<Bullet*> _unuserdBullets;
 };
 
 inline bool Tank::moving()
 {
 	return _moving;
+}
+
+inline TileMap* Tank::tilemap()
+{
+	return _tilemap;
 }
 
 inline Direction Tank::direction()

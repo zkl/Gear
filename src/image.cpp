@@ -111,8 +111,10 @@ void Image::draw(SDL_Renderer * renderer, int x, int y, int w, int h)
 	srcRect.x = 0;
 	srcRect.y = 0;
 
-	//SDL_RenderCopy(renderer, _texture, &srcRect, &dstRect);
-	SDL_RenderCopyEx(renderer, _texture, &srcRect, &dstRect, _angle, &_center, _flip);
+	if(_angle == 0)
+		SDL_RenderCopy(renderer, _texture, &srcRect, &dstRect);
+	else
+		SDL_RenderCopyEx(renderer, _texture, &srcRect, &dstRect, _angle, &_center, _flip);
 }
 
 void Image::drawEx(SDL_Surface* surface, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) const
@@ -143,4 +145,10 @@ void Image::drawEx(SDL_Surface* surface, int x1, int y1, int w1, int h1, int x2,
 			SDL_BlitSurface(_surface, &srcrect, surface, &desrect);
 		}
 	}
+}
+
+void Image::fill(Color* c, const SDL_Rect* rect)
+{
+	SDL_FillRect(_surface, rect, SDL_MapRGBA(_surface->format, (Uint8)c->r(), (Uint8)c->g(), (Uint8)c->b(), (Uint8)c->a()));
+	_update = true;
 }

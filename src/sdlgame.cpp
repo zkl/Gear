@@ -56,9 +56,13 @@ void SDLGame::run()
 		{
 			unsigned int time = SDL_GetTicks();
 			this->handleEvents();
-			this->update(time-_uptime);
-			this->render();
-			_uptime = time;
+
+			if(time-_interval> _interval)
+			{
+				this->update(time-_uptime);
+				this->render();
+				_uptime = time;
+			}
 		};
 	}
 }

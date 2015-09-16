@@ -5,33 +5,44 @@
 
 bool GameScreen::init()
 {
+	srand((unsigned int)time(0));
+
 	_tilemap.load("map.tmx");
 
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_tank);
+
+	for(unsigned int i=0; i<5; i++)
+	{
+		_robots.push_back(new Robot());
+		_world.appendChild(_robots[i]);
+	}
+
 	_world.init();
 
 	_tank.setPosition(160, 160);
 	_tank.setTileMap(&_tilemap);
 
-	srand((unsigned int)time(0));
+	for(unsigned int i=0; i<_robots.size(); i++)
+		_robots[i]->setMap(&_tilemap);
+
+
 	return true;
 }
 
 void GameScreen::update(unsigned int dt)
 {
 	_world.update(dt);
-
 	if(!_tank.moving())
 	{
 		const Uint8* sta = SDL_GetKeyboardState(0);
-		if(sta[::SDL_SCANCODE_UP])
+		if(sta[::SDL_SCANCODE_W])
 			_tank.turnUp();
-		else if(sta[::SDL_SCANCODE_DOWN])
+		else if(sta[::SDL_SCANCODE_S])
 			_tank.turnDown();
-		else if(sta[::SDL_SCANCODE_LEFT])
+		else if(sta[::SDL_SCANCODE_A])
 			_tank.turnLeft();
-		else if(sta[::SDL_SCANCODE_RIGHT])
+		else if(sta[::SDL_SCANCODE_D])
 			_tank.turnRight();
 	}
 }

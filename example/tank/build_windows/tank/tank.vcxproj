@@ -111,6 +111,8 @@
     <ClInclude Include="..\..\src\bullet.h" />
     <ClInclude Include="..\..\src\control.h" />
     <ClInclude Include="..\..\src\gamescreen.h" />
+    <ClInclude Include="..\..\src\patrol.h" />
+    <ClInclude Include="..\..\src\robot.h" />
     <ClInclude Include="..\..\src\tank.h" />
   </ItemGroup>
   <ItemGroup>

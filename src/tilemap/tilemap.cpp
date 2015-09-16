@@ -48,8 +48,10 @@ void TileMap::analyzeMapInfo(tinyxml2::XMLElement * root)
 	_bgColor.fromString(color);
 
 	_image.resize(_w*_tileWidth, _h*_tileHeight);
-	SDL_FillRect(_image.surface(), 0, 
-		SDL_MapRGB(_image.surface()->format, (Uint8)_bgColor.r(),(Uint8)_bgColor.g(), (Uint8)_bgColor.b()));
+	//SDL_FillRect(_image.surface(), 0, 
+	//	SDL_MapRGB(_image.surface()->format, (Uint8)_bgColor.r(),(Uint8)_bgColor.g(), (Uint8)_bgColor.b()));
+
+	_image.fill(&_bgColor);
 }
 
 void TileMap::analyzeTileset(XMLElement * e)
@@ -139,7 +141,7 @@ Tileset * TileMap::getTileset(int gid)
 	while(it != _tilesets.end())
 	{
 		if(gid < it->second->fgid())
-			return --it->second;
+			return (--it)->second;
 
 		if(max->second->fgid() < it->second->fgid())
 			max = it;
@@ -166,6 +168,7 @@ void TileMap::drawlayer(Layer * layer)
 			p = _layers[i]->nextGid();
 		}
 	}
+	_image.update();
 }
 
 void TileMap::draw(SDL_Renderer * renderer)
@@ -173,4 +176,28 @@ void TileMap::draw(SDL_Renderer * renderer)
 	_image.draw(renderer, _x, _y);
 
 	Object::draw(renderer);
+}
+
+bool TileMap::setGid(int x, int y, int gid)
+{
+	if(_layers.size() <= 0)
+		return false;
+
+	SDL_Rect rect;
+	rect.x = x/_tileWidth * _tileWidth;
+	rect.y = y/_tileHeight* _tileHeight;
+	rect.w = _tileWidth;
+	rect.h = _tileHeight;
+ 	_image.fill(&_bgColor, &rect);
+
+	int position = x/_tileWidth + y/_tileHeight*_w;
+
+	Layer* layer = _layers[0];
+	layer->setGid(position, gid);
+
+	Tileset * tileset = getTileset(gid);	
+	if(tileset && gid != 0)
+		tileset->copy(_image.surface(), rect.x, rect.y, gid);
+
+	return true;
 }

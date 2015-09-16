@@ -27,7 +27,7 @@ protected:
 private:
 	bool _inited;
 	bool _isRunning;
-	int  _interval;
+	unsigned int  _interval;
 	unsigned int _uptime;
 	Director* _director;
 	SDL_Window * _window;

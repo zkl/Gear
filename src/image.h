@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "ref.h"
+#include "color.h"
 
 class Image : public Ref
 {
@@ -27,7 +28,7 @@ public:
 	void draw(SDL_Renderer * renderer, int x = 0, int y = 0, int w = 0, int h = 0);
 	void drawEx(SDL_Surface* surface, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) const;
 
-	//void fill(SDL_Rect* rect, Color* c);
+	void fill(Color* c, const SDL_Rect* rect = 0);
 
 	SDL_Surface* surface();
 
@@ -53,9 +54,11 @@ inline Image::Image() :
 
 inline Image::Image(const char* file) : 
 	_texture(0),
-	_update(true)
+	_update(true),
+	_surface(0)
 {
-	_surface = IMG_Load(file);
+	if(file != 0 || *file != 0)
+		this->load(file);
 }
 
 inline bool Image::load(const char* file)

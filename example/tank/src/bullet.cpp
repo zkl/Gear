@@ -2,57 +2,71 @@
 #include "bullet.h"
 
 Bullet::Bullet() : 
-	_bobing(false),
-	_interval(5),
+	_exploding(false),
+	_step(4),
 	_uptime(0)
 {
-	_bob.setActive(false);
-	_bob.setVisiable(false);
+	_bomb.setActive(false);
+	_bomb.setVisiable(false);
+	this->setActive(false);
+	this->setVisiable(false);
 }
 
-void Bullet::emit(int direction)
+void Bullet::launch(int direction)
 {
 	this->setVisiable();
 	this->setActive();
-
 	_direction = direction;
-	
-	if(_direction == DIR_RIGHT)
+
+	switch(_direction)
+	{
+	case DIR_RIGHT:
 		_image.rotation(0);
-	else if(_direction == DIR_LEFT)
+		break;
+	case DIR_LEFT:
 		_image.rotation(180);
-	else if(_direction == DIR_UP)
-		_image.rotation(270);
-	else if(_direction == DIR_DOWN)
+		break;
+	case DIR_DOWN:
 		_image.rotation(90);
+		break;
+	case DIR_UP:
+		_image.rotation(270);
+		break;
+	default:
+		break;
+	}
 }
 
-void Bullet::bob()
+void Bullet::explode()
 {
-	_bobing = true;
-	_bob.setPosition(_x-32+8, _y-32+8);
-	_bob.setActive();
-	_bob.setVisiable();
-	_bob.play();
+	_exploding = true;
+	_bomb.setPosition(_x-32+8, _y-32+8);
+	_bomb.setActive();
+	_bomb.setVisiable();
+	_bomb.play();
 }
 
 bool Bullet::init()
 {
-	Image bobimg("bob.png");
-	_bob.addFrames(&bobimg, 0, 0, 64, 64, 5, 5);
-	this->appendChild(&_bob);
+	Image bombImage("bob.png");
+	_bomb.addFrames(&bombImage, 0, 0, 64, 64, 5, 5);
+	this->appendChild(&_bomb);
 
-	_bob.setActive(false);
-	_bob.setVisiable(false);
-	_bob.setFps(10);
+	_bomb.setActive(false);
+	_bomb.setVisiable(false);
+	_bomb.setFps(10);
+
+	this->setActive(false);
+	this->setVisiable(false);
 
 	_image.load("bullet.png");
+
 	return !_image.empty();
 }
 
 void Bullet::draw(SDL_Renderer * renderer)
 {
-	if(!_bobing)
+	if(!_exploding)
 		_image.draw(renderer, _x, _y);
 
 	Object::draw(renderer);
@@ -62,14 +76,14 @@ void Bullet::update(unsigned int dt)
 {
 	Object::update(dt);
 
-	if(_bobing)
+	if(_exploding)
 	{
-		if(!_bob.playing())
+		if(!_bomb.playing())
 		{
-			_bobing = false;
+			_exploding = false;
 
-			_bob.setActive(false);
-			_bob.setVisiable(false);
+			_bomb.setActive(false);
+			_bomb.setVisiable(false);
 
 			this->setActive(false);
 			this->setVisiable(false);
@@ -77,29 +91,23 @@ void Bullet::update(unsigned int dt)
 		return ;
 	}
 
-	_uptime += dt;
-	while(_uptime > _interval)
+	switch(_direction)
 	{
-		_uptime -= _interval;
-		switch(_direction)
-		{
-		case DIR_RIGHT:
-			_x += 1;
-			break;
-		case DIR_LEFT:
-			_x -= 1;
-			break;
-		case DIR_DOWN:
-			_y += 1;
-			break;
-		case DIR_UP:
-			_y -= 1;
-			break;
-		default:
-			break;
-		}
+	case DIR_RIGHT:
+		_x += _step;
+		break;
+	case DIR_LEFT:
+		_x -= _step;
+		break;
+	case DIR_DOWN:
+		_y += _step;
+		break;
+	case DIR_UP:
+		_y -= _step;
+		break;
+	default:
+		break;
 	}
-
 }
 
 

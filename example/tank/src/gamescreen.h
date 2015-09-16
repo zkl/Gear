@@ -8,6 +8,7 @@
 #include "src/movie.h"
 #include "tank.h"
 #include "control.h"
+#include "robot.h"
 
 class GameScreen : public Screen
 {
@@ -21,6 +22,7 @@ private:
 	Tank  _tank;
 	World _world;
 	TileMap _tilemap;
+	std::vector<Robot*> _robots;
 };
 
 

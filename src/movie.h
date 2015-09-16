@@ -25,8 +25,8 @@ private:
 	bool _loop;
 	bool _playing;
 	int  _frame;
-	int _uptime;
-	int _interval;
+	unsigned int _uptime;
+	unsigned int _interval;
 	std::vector<Image *> _frames;
 };
 
@@ -64,11 +64,6 @@ inline void Movie::setFps(int fps)
 	_interval = 1000 / fps;
 }
 
-inline void Movie::draw(SDL_Renderer* renderer)
-{
-	if((unsigned int)_frame < _frames.size() && this->visiable())
-		_frames[_frame]->draw(renderer, _x, _y);
-}
 
 inline bool Movie::init()
 {
