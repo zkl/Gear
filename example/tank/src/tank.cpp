@@ -58,8 +58,8 @@ void Tank::setTileMap(TileMap* tilemap)
 {
 	_tilemap = tilemap;
 
-	_width = _tilemap->tilsetWidth();
-	_height = _tilemap->tilsetHeight();
+	_width = _tilemap->tilewidth();
+	_height = _tilemap->tileheight();
 }
 
 bool Tank::init()
@@ -116,6 +116,14 @@ void Tank::update(unsigned int dt)
 				bullet.explode();
 			}
 
+			int position = _tilemap->convertPositionFromCoordinate(bullet.x(), bullet.y());
+			Tank* tank = (Tank*)_tilemap->getObject(position);
+			if(tank != 0 && tank != this)
+			{
+				bullet.explode();
+				tank->blowUp();
+			}
+
 			it++;
 		}
 		else
@@ -159,7 +167,8 @@ void Tank::move()
 		_image.rotation(180);
 		_y += _step;
 	}
-	
+
+
 	if(blocked() || (_x%_width == 0 && _y%_height == 0))
 	{
 		_moving = false;
@@ -169,6 +178,23 @@ void Tank::move()
 			_y = y;
 		}
 	}
+
+	int po = _tilemap->convertPositionFromCoordinate(x, y);
+	int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
+	int p2 = _tilemap->convertPositionFromCoordinate(x+15, y+15);
+	int p3 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+	if(p1 != po)
+	{
+		_tilemap->setObject(po, 0);
+		_tilemap->setObject(p1, this);
+	}
+
+	if(p2 != p3)
+	{
+		_tilemap->setObject(p2, 0);
+		_tilemap->setObject(p3, this);
+	}
+	_tilemap->setObject(p2, this);
 }
 
 

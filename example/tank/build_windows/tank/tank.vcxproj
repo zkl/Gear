@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\..\..\src\spritesheet.h" />
     <ClInclude Include="..\..\..\..\src\tilemap\imagelayer.h" />
     <ClInclude Include="..\..\..\..\src\tilemap\layer.h" />
+    <ClInclude Include="..\..\..\..\src\tilemap\objectlayer.h" />
     <ClInclude Include="..\..\..\..\src\tilemap\tilemap.h" />
     <ClInclude Include="..\..\..\..\src\tilemap\tileset.h" />
     <ClInclude Include="..\..\..\..\src\timer.h" />

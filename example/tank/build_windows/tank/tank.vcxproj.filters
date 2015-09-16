@@ -126,6 +126,9 @@
     <ClInclude Include="..\..\src\patrol.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\tilemap\objectlayer.h">
+      <Filter>Gear\Tilemap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\animate.cpp">

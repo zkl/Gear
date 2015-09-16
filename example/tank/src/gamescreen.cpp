@@ -12,7 +12,7 @@ bool GameScreen::init()
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_tank);
 
-	for(unsigned int i=0; i<5; i++)
+	for(unsigned int i=0; i<6; i++)
 	{
 		_robots.push_back(new Robot());
 		_world.appendChild(_robots[i]);

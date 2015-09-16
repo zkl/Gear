@@ -47,10 +47,8 @@ void TileMap::analyzeMapInfo(tinyxml2::XMLElement * root)
 	const char * color = root->Attribute("backgroundcolor");
 	_bgColor.fromString(color);
 
+	_objects.resize(_tileWidth*_tileHeight);
 	_image.resize(_w*_tileWidth, _h*_tileHeight);
-	//SDL_FillRect(_image.surface(), 0, 
-	//	SDL_MapRGB(_image.surface()->format, (Uint8)_bgColor.r(),(Uint8)_bgColor.g(), (Uint8)_bgColor.b()));
-
 	_image.fill(&_bgColor);
 }
 
@@ -131,7 +129,7 @@ void TileMap::anylyzeImageLayer(XMLElement * e)
 	}
 }
 
-Tileset * TileMap::getTileset(int gid)
+Tileset * TileMap::tilesetOfGid(int gid)
 {
 	if(_tilesets.size() == 0 || gid <= 0)
 		return 0;
@@ -158,7 +156,7 @@ void TileMap::drawlayer(Layer * layer)
 		std::pair<int, int> p = _layers[i]->firstGid();
 		while(p.second != 0)
 		{
-			Tileset * set = getTileset(p.second);	
+			Tileset * set = tilesetOfGid(p.second);	
 			if(set)
 			{
 				set->copy(_image.surface(), ((p.first)%_w)*_tileWidth, 
@@ -195,7 +193,7 @@ bool TileMap::setGid(int x, int y, int gid)
 	Layer* layer = _layers[0];
 	layer->setGid(position, gid);
 
-	Tileset * tileset = getTileset(gid);	
+	Tileset * tileset = tilesetOfGid(gid);	
 	if(tileset && gid != 0)
 		tileset->copy(_image.surface(), rect.x, rect.y, gid);
 

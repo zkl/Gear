@@ -8,6 +8,7 @@
 #include "tileset.h"
 #include "layer.h"
 #include "imagelayer.h"
+#include "objectlayer.h"
 #include "../object.h"
 #include "../color.h"
 #include "../image.h"
@@ -24,18 +25,23 @@ public:
 	virtual bool blocked(int x, int y, int role);
 
 	bool load(const char * file);
-	void move(int x, int y);
+	void move(int x, int y); // pix
+	void scorll(int dx, int dy); // pix
 	int  getGid(int x, int y);
 	int  getGridGid(int colum, int row);
 	bool setGid(int x, int y, int gid);
+	int  convertPositionFromCoordinate(int x, int y);
+
+	void  setObject(int position, void* obj);
+	void* getObject(int position);
 
 	// 宽度和高度(单位像素)
 	int  width();
 	int  height();
-	int  tilsetWidth();
-	int  tilsetHeight();
-	int  tilsetColum();
-	int  tilsetRow();
+	int  tilewidth();
+	int  tileheight();
+	int  colum();
+	int  row();
 
 	void draw(SDL_Renderer * renderer);
 private:
@@ -45,7 +51,7 @@ private:
 	void anylyzeImageLayer(XMLElement * element);
 	void drawlayer(Layer * layer);
 
-	Tileset * getTileset(int gid);
+	Tileset * tilesetOfGid(int gid);
 
 	int _w, _h;
 	int _x, _y;
@@ -58,6 +64,7 @@ private:
 	// name -> tileset
 	std::map<std::string, Tileset*> _tilesets;
 
+	ObjectLayer _objects;
 	Image _image;
 };
 
@@ -102,23 +109,38 @@ inline int TileMap::height()
 	return _h*_tileHeight;
 }
 
-inline int TileMap::tilsetWidth()
+inline int TileMap::tilewidth()
 {
 	return _tileWidth;
 }
 
-inline int TileMap::tilsetHeight()
+inline int TileMap::tileheight()
 {
 	return _tileHeight;
 }
 
-inline int TileMap::tilsetColum()
+inline int TileMap::colum()
 {
 	return _w;
 }
-inline int TileMap::tilsetRow()
+inline int TileMap::row()
 {
 	return _h;
+}
+
+inline int TileMap::convertPositionFromCoordinate(int x, int y)
+{
+	return x/_w + (y/_h)*_tileWidth;
+}
+
+inline void TileMap::setObject(int position, void* obj)
+{
+	_objects.setObject(position, obj);
+}
+
+inline void* TileMap::getObject(int position)
+{
+	return _objects.getObject(position);
 }
 
 #endif

@@ -21,6 +21,7 @@ public:
 	Tank();
 	
 	void fire();
+	void blowUp();
 
 	void turnLeft();
 	void turnRight();
@@ -43,6 +44,7 @@ private:
 	void move();
 	bool blocked();
 
+	bool _updatePosition;
 	bool _moving;
 	Direction _direction;
 
@@ -72,6 +74,28 @@ inline TileMap* Tank::tilemap()
 inline Direction Tank::direction()
 {
 	return _direction;
+}
+
+inline void Tank::turn(Direction direction)
+{
+	_direction = direction;
+}
+
+inline void Tank::moveForword()
+{
+	_moving = true;
+}
+
+
+inline void Tank::blowUp()
+{
+	this->setVisiable(false);
+	this->setActive(false);
+
+	int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
+	int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+	_tilemap->setObject(p1, 0);
+	_tilemap->setObject(p2, 0);
 }
 
 #endif
