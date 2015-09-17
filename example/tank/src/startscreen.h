@@ -17,6 +17,7 @@ private:
 	int _height;
 	int _uptime;
 	Image _image;
+	Image _message;
 };
 
 

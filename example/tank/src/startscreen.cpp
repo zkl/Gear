@@ -3,7 +3,7 @@
 
 bool StartScreen::init()
 {
-	return _image.load("menu.png");
+	return _message.load("menu.png") && _image.load("bg.png");
 }
 
 void StartScreen::begin()
@@ -12,16 +12,17 @@ void StartScreen::begin()
 	_height = _image.height();
 }
 
-void StartScreen::update(unsigned int dt)
+void StartScreen::update(unsigned int )
 {
-	_uptime += dt;
 	if(_height > 0)
 		_height -= 2;
+	else
+		_height = 0;
 }
 
 void StartScreen::handleEvent(const SDL_Event& event)
 {
-	if(_uptime < 1000)
+	if(_height > 0)
 		return ;
 
 	if(event.type == SDL_KEYDOWN)
@@ -30,5 +31,6 @@ void StartScreen::handleEvent(const SDL_Event& event)
 
 void StartScreen::draw(SDL_Renderer* randerer)
 {
-	_image.draw(randerer, 0, _height);
+	_image.draw(randerer);
+	_message.draw(randerer, 0, _height);
 }

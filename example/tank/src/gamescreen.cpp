@@ -11,11 +11,12 @@ bool GameScreen::init()
 	
 	_tilemap.load("map.tmx");
 
+	_tank.setGroup(0);
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_tank);
 
-	_livedTanks = 20;
-	for(unsigned int i=0; i<_livedTanks; i++)
+	_livedTanks = 50;
+	for(int i=0; i<_livedTanks; i++)
 	{
 		Robot* robot = new Robot();
 		_robots.push_back(robot);
@@ -38,6 +39,7 @@ void GameScreen::begin()
 	for(unsigned int i=0; i<_robots.size(); i++)
 		_robots[i]->reset();
 
+	_tilemap.getObjectLayer()->clear();
 	_livedTanks = _robots.size();
 	_tank.setVisiable();
 	_tank.setActive();
@@ -54,13 +56,13 @@ void GameScreen::update(unsigned int dt)
 	if(!_tank.moving())
 	{
 		const Uint8* sta = SDL_GetKeyboardState(0);
-		if(sta[::SDL_SCANCODE_W])
+		if(sta[::SDL_SCANCODE_W] || sta[::SDL_SCANCODE_UP])
 			_tank.turnUp();
-		else if(sta[::SDL_SCANCODE_S])
+		else if(sta[::SDL_SCANCODE_S] || sta[SDL_SCANCODE_DOWN])
 			_tank.turnDown();
-		else if(sta[::SDL_SCANCODE_A])
+		else if(sta[::SDL_SCANCODE_A] || sta[SDL_SCANCODE_LEFT])
 			_tank.turnLeft();
-		else if(sta[::SDL_SCANCODE_D])
+		else if(sta[::SDL_SCANCODE_D] || sta[SDL_SCANCODE_RIGHT])
 			_tank.turnRight();
 	}
 }
@@ -110,7 +112,7 @@ void GameScreen::handleEvent(const SDL_Event& event)
 	}
 }
 
-bool GameScreen::tankBlowUp(int id, void* data, void* param)
+bool GameScreen::tankBlowUp(int , void* data, void* param)
 {
 	GameScreen* screen = (GameScreen*)data;
 	Tank* tank = (Tank*)param;

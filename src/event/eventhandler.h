@@ -22,7 +22,7 @@ private:
 		EventWatcher watcher;
 	};
 
-	std::vector<std::vector<Event>> _eventWathers;
+	std::vector< std::vector<Event> > _eventWathers;
 };
 
 inline EventHandler::EventHandler()

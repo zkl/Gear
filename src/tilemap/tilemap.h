@@ -25,15 +25,18 @@ public:
 	virtual bool blocked(int x, int y, int role);
 
 	bool load(const char * file);
+
 	void move(int x, int y); // pix
 	void scorll(int dx, int dy); // pix
 	int  getGid(int x, int y);
 	int  getGridGid(int colum, int row);
 	bool setGid(int x, int y, int gid);
 	int  convertPositionFromCoordinate(int x, int y);
+	int  convertPositionFromGrid(int colum, int row);
 
 	void  setObject(int position, void* obj);
 	void* getObject(int position);
+	ObjectLayer* getObjectLayer();
 
 	// 宽度和高度(单位像素)
 	int  width();
@@ -128,6 +131,11 @@ inline int TileMap::row()
 	return _h;
 }
 
+inline int TileMap::convertPositionFromGrid(int colum, int row)
+{
+	return colum + row * _w;
+}
+
 inline int TileMap::convertPositionFromCoordinate(int x, int y)
 {
 	return x/_tileWidth + (y/_tileHeight)*_w;
@@ -141,6 +149,11 @@ inline void TileMap::setObject(int position, void* obj)
 inline void* TileMap::getObject(int position)
 {
 	return _objects.getObject(position);
+}
+
+inline ObjectLayer* TileMap::getObjectLayer()
+{
+	return &_objects;
 }
 
 #endif

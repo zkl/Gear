@@ -46,7 +46,6 @@ inline void Robot::reset()
 {
 	_uptime = rand()%8000+1000;
 	_tank.setPosition(rand()%25 * 16, rand()%25 * 16);
-	_tank.blowUp();
 	_tank.setActive(true);
 	_tank.setVisiable(true);
 }

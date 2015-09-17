@@ -15,13 +15,14 @@ public:
 
 private:
 	int _uptime;
-	Image _image;
+	Image _message;
+	Image _background;
 };
 
 
 inline bool GameOverScreen::init()
 {
-	return _image.load("gameover.png");
+	return _background.load("bg.png") && _message.load("gameover.png");
 }
 
 inline void GameOverScreen::begin()
@@ -36,7 +37,8 @@ inline void GameOverScreen::update(unsigned int dt)
 
 inline void GameOverScreen::draw(SDL_Renderer* randerer)
 {
-	_image.draw(randerer);
+	_background.draw(randerer);
+	_message.draw(randerer);
 }
 
 inline void GameOverScreen::handleEvent(const SDL_Event& event)
@@ -47,6 +49,5 @@ inline void GameOverScreen::handleEvent(const SDL_Event& event)
 	if(event.type == SDL_KEYDOWN)
 		Director::getDirector()->changeScreen("Menu");
 }
-
 
 #endif

@@ -12,6 +12,7 @@ public:
 	void  resize(int size);
 	void  setObject(int position, void* obj);
 	void* getObject(int position);
+	void  clear();
 
 private:
 	std::vector<void *> _objects;
@@ -35,8 +36,16 @@ inline void ObjectLayer::setObject(int position, void* obj)
 
 inline void* ObjectLayer::getObject(int position)
 {
+	if(position < 0)
+		printf("ObjectLayer::getObject error -> position < 0\n");
+
 	return _objects[position];
 }
 
+inline void ObjectLayer::clear()
+{
+	for(unsigned int i=0; i<_objects.size(); i++)
+		_objects[i] = 0;
+}
 
 #endif

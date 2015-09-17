@@ -4,7 +4,7 @@ VPATH = ../../../src  ../../../src/tilemap ../../../src/route/astar \
 
 OBJECTS = sprite.o runner.o world.o object.o objectpool.o tilemap.o color.o\
 	layer.o tileset.o imagelayer.o spritesheet.o sdlgame.o image.o \
-	movie.o astar.o main.o gamescreen.o tank.o bullet.o
+	movie.o astar.o main.o gamescreen.o tank.o bullet.o startscreen.o
 
 CPPFLAGS += -g -I../../../
 

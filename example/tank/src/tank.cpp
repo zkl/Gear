@@ -74,7 +74,12 @@ bool Tank::init()
 	_step  = 2;
 	_uptime = 0;
 	_direction = DIR_UP;
-	_image.load("tank.png");
+
+	if(_group == 0)
+		_image.load("tank_red.png");
+	else
+		_image.load("tank.png");
+
 	return Object::init();
 }
 
