@@ -1,3 +1,5 @@
+#include "src/event/eventhandler.h"
+#include "src/director.h"
 #include "tank.h"
 
 Tank::Tank() : 
@@ -73,7 +75,6 @@ bool Tank::init()
 	_uptime = 0;
 	_direction = DIR_UP;
 	_image.load("tank.png");
-
 	return Object::init();
 }
 
@@ -225,7 +226,13 @@ void Tank::blowUp()
 {
 	this->setVisiable(false);
 	this->setActive(false);
+	this->unmarkOnMap();
 
+	EventHandler::instance()->dispatch(0, this);
+}
+
+void Tank::unmarkOnMap()
+{
 	int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
 	int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
 	_tilemap->setObject(p1, 0);

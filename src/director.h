@@ -68,7 +68,10 @@ inline const char* Director::changeScreen(const char* name)
 		return 0;
 
 	const char* oldScreen = _currentScreen->first.c_str();
+
+	_currentScreen->second->end();
 	_currentScreen = it;
+	_currentScreen->second->begin();
 
 	return oldScreen;
 }

@@ -110,10 +110,11 @@
     <ClInclude Include="..\..\..\..\src\timer.h" />
     <ClInclude Include="..\..\..\..\src\world.h" />
     <ClInclude Include="..\..\src\bullet.h" />
-    <ClInclude Include="..\..\src\control.h" />
+    <ClInclude Include="..\..\src\gameoverscreen.h" />
     <ClInclude Include="..\..\src\gamescreen.h" />
     <ClInclude Include="..\..\src\patrol.h" />
     <ClInclude Include="..\..\src\robot.h" />
+    <ClInclude Include="..\..\src\startscreen.h" />
     <ClInclude Include="..\..\src\tank.h" />
   </ItemGroup>
   <ItemGroup>
@@ -138,9 +139,9 @@
     <ClCompile Include="..\..\..\..\src\tilemap\tileset.cpp" />
     <ClCompile Include="..\..\..\..\src\world.cpp" />
     <ClCompile Include="..\..\src\bullet.cpp" />
-    <ClCompile Include="..\..\src\control.cpp" />
     <ClCompile Include="..\..\src\gamescreen.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\startscreen.cpp" />
     <ClCompile Include="..\..\src\tank.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

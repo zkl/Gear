@@ -111,9 +111,6 @@
     <ClInclude Include="..\..\src\bullet.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\control.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\gamescreen.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -128,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\tilemap\objectlayer.h">
       <Filter>Gear\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\startscreen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gameoverscreen.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +197,6 @@
     <ClCompile Include="..\..\src\bullet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\control.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\gamescreen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -204,6 +204,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tank.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\startscreen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

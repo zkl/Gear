@@ -1,18 +1,21 @@
 #include "src/route/astar/astar.h"
+#include "src/director.h"
 #include "gamescreen.h"
 #include <stdlib.h>
-#include <time.h>
+#include "src/event/eventhandler.h"
 
 bool GameScreen::init()
 {
-	srand((unsigned int)time(0));
-
+	EventHandler::instance()->setMaxEventId(10);
+	EventHandler::instance()->addEventWather(0, tankBlowUp, this);
+	
 	_tilemap.load("map.tmx");
 
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_tank);
 
-	for(unsigned int i=0; i<5; i++)
+	_livedTanks = 20;
+	for(unsigned int i=0; i<_livedTanks; i++)
 	{
 		Robot* robot = new Robot();
 		_robots.push_back(robot);
@@ -28,6 +31,20 @@ bool GameScreen::init()
 		_robots[i]->setMap(&_tilemap);
 
 	return true;
+}
+
+void GameScreen::begin()
+{
+	for(unsigned int i=0; i<_robots.size(); i++)
+		_robots[i]->reset();
+
+	_livedTanks = _robots.size();
+	_tank.setVisiable();
+	_tank.setActive();
+}
+
+void GameScreen::end()
+{
 }
 
 void GameScreen::update(unsigned int dt)
@@ -93,3 +110,19 @@ void GameScreen::handleEvent(const SDL_Event& event)
 	}
 }
 
+bool GameScreen::tankBlowUp(int id, void* data, void* param)
+{
+	GameScreen* screen = (GameScreen*)data;
+	Tank* tank = (Tank*)param;
+
+	if(tank == &screen->_tank)
+		Director::getDirector()->changeScreen("GameOver");
+	else 
+		screen->_livedTanks--;
+
+	if(screen->_livedTanks <= 0)
+	{
+		SDL_Log("You Win");
+	}
+	return true;
+}

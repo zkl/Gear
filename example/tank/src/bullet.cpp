@@ -55,7 +55,7 @@ bool Bullet::init()
 
 	_bomb.setActive(false);
 	_bomb.setVisiable(false);
-	_bomb.setFps(10);
+	_bomb.setFps(15);
 
 	this->setActive(false);
 	this->setVisiable(false);

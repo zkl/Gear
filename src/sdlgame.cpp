@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <time.h>
 #include "sdlgame.h"
 #include "screen.h"
 
@@ -30,6 +31,7 @@ bool SDLGame::init(const char * title, int w, int h, int flags)
 	_isRunning = true;
 	_uptime = 0;
 	
+	srand((unsigned int)time(0));
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		return false;
 

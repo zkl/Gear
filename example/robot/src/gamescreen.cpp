@@ -14,7 +14,7 @@ bool GameScreen::init()
 	_world.appendChild(&_bob);
 	_world.init();
 
-	_route.resize(_tilemap.tilsetColum(), _tilemap.tilsetRow());
+	_route.resize(_tilemap.colum(), _tilemap.row());
 
 	Image image("target.png");
 	_target.addFrames(&image, 0, 0, 16, 16, 6, 6);
@@ -37,14 +37,14 @@ void GameScreen::update(unsigned int dt)
 	
 	if(!_robot.moving() && _route.way().size() > 0)
 	{
-		if(_robot.x() < _route.way()[0]->x*_tilemap.tilsetWidth())
+		if(_robot.x() < _route.way()[0]->x*_tilemap.tilewidth())
 			_robot.turnRight();
-		else if(_robot.x() > _route.way()[0]->x*_tilemap.tilsetWidth())
+		else if(_robot.x() > _route.way()[0]->x*_tilemap.tilewidth())
 			_robot.turnLeft();
 
-		if(_robot.y() < _route.way()[0]->y*_tilemap.tilsetHeight())
+		if(_robot.y() < _route.way()[0]->y*_tilemap.tileheight())
 			_robot.turnDown();
-		else if(_robot.y() > _route.way()[0]->y*_tilemap.tilsetHeight())
+		else if(_robot.y() > _route.way()[0]->y*_tilemap.tileheight())
 			_robot.turnUp();
 
 		_route.way().erase(_route.way().begin());
@@ -52,8 +52,8 @@ void GameScreen::update(unsigned int dt)
 		if(_route.way().size() == 0)
 		{
 
-			int w = _tilemap.tilsetWidth();
-			int h = _tilemap.tilsetHeight();
+			int w = _tilemap.tilewidth();
+			int h = _tilemap.tileheight();
 
 			while(1)
 			{
@@ -101,8 +101,8 @@ void GameScreen::handleEvent(const SDL_Event& event)
 	{	
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			int w = _tilemap.tilsetWidth();
-			int h = _tilemap.tilsetHeight();
+			int w = _tilemap.tilewidth();
+			int h = _tilemap.tileheight();
 			int x = event.motion.x;
 			int y = event.motion.y;
 

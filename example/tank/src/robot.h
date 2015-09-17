@@ -10,6 +10,8 @@ class Robot : public Object
 public:
 	Robot();
 
+	void reset();
+
 	void setMap(TileMap* map);
 	virtual bool init();
 	virtual void update(unsigned int dt);
@@ -36,8 +38,18 @@ inline void Robot::setMap(TileMap* map)
 inline bool Robot::init()
 {
 	_uptime = rand()%8000+1000;
+	_tank.setPosition(rand()%30 * 16, rand()%30 * 16);
 	return Object::init();
 };
+
+inline void Robot::reset()
+{
+	_uptime = rand()%8000+1000;
+	_tank.setPosition(rand()%25 * 16, rand()%25 * 16);
+	_tank.blowUp();
+	_tank.setActive(true);
+	_tank.setVisiable(true);
+}
 
 inline void Robot::update(unsigned int dt)
 {

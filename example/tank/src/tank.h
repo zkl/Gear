@@ -31,6 +31,8 @@ public:
 	void turnUp();
 	void turnDown();
 
+	void unmarkOnMap();
+
 	void moveForword();
 	void turn(Direction direction);
 	Direction direction();
