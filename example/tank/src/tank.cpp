@@ -68,7 +68,7 @@ void Tank::setTileMap(TileMap* tilemap)
 
 void Tank::update(unsigned int dt)
 {
-	if(_moving)
+	if(_moving && _alive)
 		this->move();
 
 	Object::update(dt);

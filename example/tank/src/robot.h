@@ -86,7 +86,7 @@ inline void Robot::update(unsigned int dt)
 	{
 		Tank* tank = _tanks[i];
 
-		if(!tank->moving() && tank->actived())
+		if(!tank->moving() && tank->actived() && tank->lived())
 		{
 			if(rand()%100 < 15)
 				tank->turn((Direction)(rand()%4));
