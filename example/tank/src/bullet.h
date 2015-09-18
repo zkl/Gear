@@ -15,7 +15,6 @@ public:
 	bool exploding();
 
 	virtual void draw(SDL_Renderer * renderer);
-	virtual bool init();
 	virtual void update(unsigned int dt);
 
 private:

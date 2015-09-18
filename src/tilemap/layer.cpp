@@ -1,8 +1,7 @@
 #include "layer.h"
 
-Layer::Layer(std::string name)
+Layer::Layer()
 {
-	_name = name;
 	_it = _data.begin();
 }
 

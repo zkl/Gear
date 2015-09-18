@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include "ref.h"
 
+#define ADD_CREATE_FUNCTION create()
 class Object : public Ref
 {
 public:
@@ -21,7 +22,6 @@ public:
 	bool appendChild(Object * child);
 	Object * parent(){return _parent;}
 
-	virtual bool init();
 	virtual void draw(SDL_Renderer * renderer);
 	virtual void update(unsigned int dt);
 

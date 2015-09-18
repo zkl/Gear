@@ -12,6 +12,8 @@
 class GameScreen : public Screen
 {
 public:
+	GameScreen();
+
 	virtual bool init();
 	virtual void begin();
 	virtual void end();
@@ -19,13 +21,16 @@ public:
 	virtual void update(unsigned int dt);
 	virtual void handleEvent(const SDL_Event& event);
 
-	static bool tankBlowUp(int id, void* data, void* param);
+	static bool watchTankBlowUp(int id, void* data, void* param);
 private:
-	int _livedTanks;
+	int _uptime;
+	int _max;
+	int _lived;
+	int _level;
 	Tank  _tank;
 	World _world;
 	TileMap _tilemap;
-	std::vector<Robot*> _robots;
+	Robot _robot;
 };
 
 

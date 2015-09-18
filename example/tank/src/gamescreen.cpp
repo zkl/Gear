@@ -4,45 +4,64 @@
 #include <stdlib.h>
 #include "src/event/eventhandler.h"
 
+#define MAX_TANKS_ONCE 5
+
+GameScreen::GameScreen() : 
+	_level(0),
+	_uptime(0)
+{	
+}
+
 bool GameScreen::init()
 {
 	EventHandler::instance()->setMaxEventId(10);
-	EventHandler::instance()->addEventWather(0, tankBlowUp, this);
+	EventHandler::instance()->addEventWather(0, watchTankBlowUp, this);
 	
-	_tilemap.load("map.tmx");
-
-	_tank.setGroup(0);
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_tank);
+	_world.appendChild(&_robot);
 
-	_livedTanks = 50;
-	for(int i=0; i<_livedTanks; i++)
+	for(int i=0; i<MAX_TANKS_ONCE; i++)
 	{
-		Robot* robot = new Robot();
-		_robots.push_back(robot);
-		_world.appendChild(_robots[i]);
+		Tank* tank = new Tank();
+		tank->setTileMap(&_tilemap);
+		tank->setGroup(1);
+		_robot.add(tank);
 	}
 
-	_world.init();
+	_robot.addRebornLocation(0, 0, DIR_DOWN);
+	_robot.addRebornLocation(238, 0, DIR_DOWN);
+	_robot.addRebornLocation(624, 0, DIR_DOWN);
 
 	_tank.setPosition(160, 160);
 	_tank.setTileMap(&_tilemap);
-
-	for(unsigned int i=0; i<_robots.size(); i++)
-		_robots[i]->setMap(&_tilemap);
 
 	return true;
 }
 
 void GameScreen::begin()
 {
-	for(unsigned int i=0; i<_robots.size(); i++)
-		_robots[i]->reset();
+	_uptime = 0;
+	_lived  = 0;
+	_max    = 20;
 
-	_tilemap.getObjectLayer()->clear();
-	_livedTanks = _robots.size();
-	_tank.setVisiable();
-	_tank.setActive();
+	char mapfile[1024];
+	sprintf_s(mapfile, "maps/level%d.tmx", _level);
+	if(!_tilemap.load(mapfile))
+	{
+		Director::getDirector()->changeScreen("Menu");
+	}
+	else
+	{
+		_robot.rebornAllTanks();
+
+		if(!_tank.lived())
+			_tank.reborn();
+
+		_tank.relocation((_tilemap.colum()-4)/2 * _tilemap.tilewidth(), _tilemap.height() - _tilemap.tileheight());
+		_tank.turn(DIR_UP);
+		_tank.upgrade();
+	}
 }
 
 void GameScreen::end()
@@ -64,6 +83,15 @@ void GameScreen::update(unsigned int dt)
 			_tank.turnLeft();
 		else if(sta[::SDL_SCANCODE_D] || sta[SDL_SCANCODE_RIGHT])
 			_tank.turnRight();
+	}
+
+	_uptime += dt;
+	if(_uptime > 2000 && _lived < MAX_TANKS_ONCE && _lived < _max)
+	{
+		_uptime = 0;
+
+		_lived++;
+		_robot.randRebornATank();
 	}
 }
 
@@ -92,17 +120,11 @@ void GameScreen::handleEvent(const SDL_Event& event)
 
 			if(sta[::SDL_SCANCODE_P])
 			{
-				for(unsigned int i=0; i<_robots.size(); i++)
-				{
-					_robots[i]->setActive(false);
-				}
+				_robot.setActive(false);
 			}
 			else if(sta[::SDL_SCANCODE_G])
 			{
-				for(unsigned int i=0; i<_robots.size(); i++)
-				{
-					_robots[i]->setActive(true);
-				}
+				_robot.setActive(true);
 			}
 
 			break;
@@ -112,19 +134,24 @@ void GameScreen::handleEvent(const SDL_Event& event)
 	}
 }
 
-bool GameScreen::tankBlowUp(int , void* data, void* param)
+bool GameScreen::watchTankBlowUp(int , void* data, void* param)
 {
 	GameScreen* screen = (GameScreen*)data;
 	Tank* tank = (Tank*)param;
 
 	if(tank == &screen->_tank)
-		Director::getDirector()->changeScreen("GameOver");
-	else 
-		screen->_livedTanks--;
-
-	if(screen->_livedTanks <= 0)
 	{
-		SDL_Log("You Win");
+		screen->_level = 0;
+		Director::getDirector()->changeScreen("GameOver");
 	}
+	else 
+	{
+		screen->_max--;
+		screen->_lived--;
+	}
+
+	if(screen->_max <= 0)
+		Director::getDirector()->changeScreen("Win");
+
 	return true;
 }

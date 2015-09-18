@@ -1,24 +1,27 @@
+#include <assert.h>
 #include "src/event/eventhandler.h"
 #include "src/director.h"
 #include "tank.h"
 
 Tank::Tank() : 
-	_explorer(true),
-	_moving(false),
 	_group(0),
-	_uptime(0),
 	_width(16),
 	_height(16),
-	_tilemap(0)
+	_tilemap(0),
+	_direction(DIR_DOWN)
 {
-	_unuserdBullets.reserve(3);
-	_bullets.reserve(3);
+	this->initData();
 
-	for(int i=0; i<5; i++)
-		_unuserdBullets.push_back(new Bullet());
+	_surplusBullets.reserve(MAX_WEAPON_LEVEL);
+	_bullets.reserve(MAX_WEAPON_LEVEL);
 
-	for(unsigned int i=0; i<_unuserdBullets.size(); i++)
-		this->appendChild(_unuserdBullets[i]);
+	for(int i=0; i<MAX_WEAPON_LEVEL; i++)
+		_surplusBullets.push_back(new Bullet());
+
+	for(unsigned int i=0; i<_surplusBullets.size(); i++)
+		this->appendChild(_surplusBullets[i]);
+
+	_image.load("tank_red.png");
 }
 
 void Tank::turnLeft()
@@ -47,51 +50,26 @@ void Tank::turnDown()
 
 void Tank::fire()
 {
-	if(_unuserdBullets.size() == 0)
-		return ;
+	if(_bullets.size() < (unsigned int)_weaponsLevel)
+	{
+		Bullet* bullet = _surplusBullets[0];
+		bullet->setPosition(_x, _y);
+		bullet->launch(_direction);
 
-	Bullet* bullet = _unuserdBullets[0];
-	bullet->setPosition(_x, _y);
-	bullet->launch(_direction);
-
-	_unuserdBullets.erase(_unuserdBullets.begin());
-	_bullets.push_back(bullet);
+		_surplusBullets.erase(_surplusBullets.begin());
+		_bullets.push_back(bullet);
+	}
 }
 
 void Tank::setTileMap(TileMap* tilemap)
 {
 	_tilemap = tilemap;
-
-	_width = _tilemap->tilewidth();
-	_height = _tilemap->tileheight();
-}
-
-bool Tank::init()
-{
-	_explorer = true;
-	_moving = false;
-	_speed = 1000/60;
-	_step  = 2;
-	_uptime = 0;
-	_direction = DIR_UP;
-
-	if(_group == 0)
-		_image.load("tank_red.png");
-	else
-		_image.load("tank.png");
-
-	return Object::init();
 }
 
 void Tank::update(unsigned int dt)
 {
-	_uptime += dt;
-	if(_uptime > _speed)
-	{
-		_uptime = 0;
-		if(_moving)
-			this->move();
-	}
+	if(_moving)
+		this->move();
 
 	Object::update(dt);
 
@@ -126,27 +104,33 @@ void Tank::update(unsigned int dt)
 			}
 
 			int position = _tilemap->convertPositionFromCoordinate(bullet.x(), bullet.y());
-			Tank* tank = (Tank*)_tilemap->getObject(position);
+			Tank* tank = (Tank*)_tilemap->getObjectLayer()->getObject(position);
 			if(tank != 0 && tank->getGroup() != this->getGroup())
 			{
 				bullet.explode();
-				tank->blowUp();
+				tank->explode();
 			}
-
 			it++;
 		}
 		else
 		{
-			_unuserdBullets.push_back(*it);
+			_surplusBullets.push_back(*it);
 			it = _bullets.erase(it);
 		}
+	}
+
+	if(!_alive && _bullets.size() == 0)
+	{
+		this->setVisiable(false);
+		this->setActive(false);
+		this->markObjectOnMap(_x, _y, 0); // clear 
+		EventHandler::instance()->dispatch(0, this);
 	}
 }
 
 void Tank::draw(SDL_Renderer * renderer)
 {
 	_image.draw(renderer, _x, _y);
-
 	Object::draw(renderer);
 }
 
@@ -156,26 +140,34 @@ void Tank::move()
 	if(_direction == DIR_LEFT)
 	{
 		_image.rotation(270);
-		_x -= _step;
+		_x -= _speed;
 	}
 	else if(_direction == DIR_RIGHT)
 	{
 		_image.rotation(90);
-		_x += _step;
+		_x += _speed;
 	}
 	else if(_direction == DIR_UP)
 	{
 		_image.rotation(0);
-		_y -= _step;
+		_y -= _speed;
 	}
 	else if(_direction == DIR_DOWN)
 	{
 		_image.rotation(180);
-		_y += _step;
+		_y += _speed;
+	}
+
+	if(x < 0 || y < 0)
+	{
+		assert(x >= 0);
+		assert(y >= 0);
+		printf("Tank::move -> Error Position");
 	}
 
 	if(_explorer)
 	{
+
 		if(blocked())
 		{
 			_x = x;
@@ -183,41 +175,44 @@ void Tank::move()
 		}
 		else
 		{
-			int p2 = _tilemap->convertPositionFromCoordinate(_x, _y);
-			int p3 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
-			_tilemap->setObject(p2, this);
-			_tilemap->setObject(p3, this);
+			int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
+			int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+			Tank* tank1 = (Tank*)_tilemap->getObjectLayer()->getObject(p1);
+			Tank* tank2 = (Tank*)_tilemap->getObjectLayer()->getObject(p2);
+			if(tank1 != this && tank1 != 0 || tank2 != this && tank2 != 0)
+			{
+				_x = x;
+				_y = y;
+			}
+			else
+			{
+				this->markObjectOnMap(_x, _y, this);
+			}
 		}
 	}
 
 	_explorer = false;
-	if(_x%_width == 0 && _y%_height == 0)
+	if(_x%_tilemap->tilewidth() == 0 && _y%_tilemap->tileheight() == 0)
 	{
 		_explorer = true;
-		_moving = false;
+		_moving   = false;
 
-		int p0 = _tilemap->convertPositionFromCoordinate(x, y);
-		int p1 = _tilemap->convertPositionFromCoordinate(x+15, y+15);
-		_tilemap->setObject(p0, 0);
-		_tilemap->setObject(p1, 0);
-
-		int p2 = _tilemap->convertPositionFromCoordinate(_x, _y);
-		_tilemap->setObject(p2, this);
+		this->markObjectOnMap(x, y, 0);
+		this->markObjectOnMap(_x, _y, this);
 	}
 }
-
 
 
 bool Tank::blocked()
 {
 	int x1 = _x, y1 = _y;
-	int x2 = _x+_width, y2 = _y+_height;
+	int x2 = _x+_image.width(), y2 = _y+_image.height();
 
 	if(x1 < 0 || y1 < 0 || x2 > _tilemap->width() || y2 > _tilemap->height())
 		return true;
 
 	int p = _tilemap->convertPositionFromCoordinate(_x, _y);
-	Tank* tank = (Tank*)_tilemap->getObject(p);
+	Tank* tank = (Tank*)_tilemap->getObjectLayer()->getObject(p);
 	if(tank != this && tank != 0)
 		return true;
 
@@ -227,19 +222,45 @@ bool Tank::blocked()
 	return true;
 }
 
-void Tank::blowUp()
+void Tank::explode()
 {
-	this->setVisiable(false);
-	this->setActive(false);
-	this->unmarkOnMap();
-
-	EventHandler::instance()->dispatch(0, this);
+	_alive = false;
+	this->markObjectOnMap(_x, _y, 0); // clear 
+	for(unsigned int i=0; i<_bullets.size(); i++)
+		_bullets[i]->explode();
 }
 
-void Tank::unmarkOnMap()
+void Tank::relocation(int x, int y)
 {
-	int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
-	int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
-	_tilemap->setObject(p1, 0);
-	_tilemap->setObject(p2, 0);
+	this->markObjectOnMap(_x, _y, 0);
+
+	_x = x/_tilemap->tilewidth()  * _tilemap->tilewidth();
+	_y = y/_tilemap->tileheight() * _tilemap->tileheight();
+
+	assert(_x >= 0);
+	assert(_y >= 0);
+
+	this->markObjectOnMap(_x, _y, 0);
+}
+
+void Tank::reborn()
+{
+	this->initData();
+
+	this->setVisiable(true);
+	this->setActive(true);
+	this->markObjectOnMap(_x, _y, this);
+}
+
+void Tank::markObjectOnMap(int x, int y, void* object)
+{
+	if(_tilemap)
+	{
+		int p1 = _tilemap->convertPositionFromCoordinate(x, y);
+		int p2 = _tilemap->convertPositionFromCoordinate(x+15, y+15);
+		_tilemap->getObjectLayer()->setObject(p1, object);
+
+		if(p1 != p2)
+			_tilemap->getObjectLayer()->setObject(p2, object);
+	}
 }

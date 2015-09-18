@@ -21,9 +21,6 @@ public:
 	TileMap();
 	~TileMap();
 	
-	// @todo 
-	virtual bool blocked(int x, int y, int role);
-
 	bool load(const char * file);
 
 	void move(int x, int y); // pix
@@ -34,8 +31,8 @@ public:
 	int  convertPositionFromCoordinate(int x, int y);
 	int  convertPositionFromGrid(int colum, int row);
 
-	void  setObject(int position, void* obj);
-	void* getObject(int position);
+	int getGid(int position);
+
 	ObjectLayer* getObjectLayer();
 
 	// 宽度和高度(单位像素)
@@ -53,20 +50,22 @@ private:
 	void anylyzeLayers(XMLElement * element);
 	void anylyzeImageLayer(XMLElement * element);
 	void drawlayer(Layer * layer);
+	void clear();
 
-	Tileset * tilesetOfGid(int gid);
+	Tileset * findTilesetByGid(int gid);
 
 	int _w, _h;
 	int _x, _y;
 	int _tileWidth, _tileHeight;
 	Color _bgColor;
 
-	//std::vector<Tileset *> _tilesets;
-	std::vector<Layer * > _layers;
+	// name -> layer
+	std::map<std::string, Layer * > _layers;
 
 	// name -> tileset
 	std::map<std::string, Tileset*> _tilesets;
 
+	char _basePath[256];
 	ObjectLayer _objects;
 	Image _image;
 };
@@ -88,18 +87,19 @@ inline int TileMap::getGridGid(int colum, int row)
 {
 	int gid = 0;
 	int position = row * _w + colum;
-	for(unsigned int i=0; i<_layers.size() && gid == 0; i++)
-		gid = _layers[i]->getGid(position);
+	for(std::map<std::string, Layer*>::iterator it = _layers.begin(); it != _layers.end() && gid == 0; it++)
+		gid = it->second->getGid(position);
 
 	return gid;
 }
 
-inline bool TileMap::blocked(int x, int y, int role)
+inline int TileMap::getGid(int position)
 {
-	if(getGid(x, y) != 0)
-		return true;
+	int gid = 0;
+	for(std::map<std::string, Layer*>::iterator it = _layers.begin(); it != _layers.end() && gid == 0; it++)
+		gid = it->second->getGid(position);
 
-	return false;
+	return gid;
 }
 
 inline int TileMap::width()
@@ -139,16 +139,6 @@ inline int TileMap::convertPositionFromGrid(int colum, int row)
 inline int TileMap::convertPositionFromCoordinate(int x, int y)
 {
 	return x/_tileWidth + (y/_tileHeight)*_w;
-}
-
-inline void TileMap::setObject(int position, void* obj)
-{
-	_objects.setObject(position, obj);
-}
-
-inline void* TileMap::getObject(int position)
-{
-	return _objects.getObject(position);
 }
 
 inline ObjectLayer* TileMap::getObjectLayer()

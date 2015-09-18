@@ -10,95 +10,94 @@ class Robot : public Object
 public:
 	Robot();
 
-	void reset();
+	void add(Tank* tank);
+	void addRebornLocation(int x, int y, Direction direction);
+	void randRebornATank(); 
+	void rebornAllTanks();
 
-	void setMap(TileMap* map);
-	virtual bool init();
 	virtual void update(unsigned int dt);
-
 private:
-	int _uptime;
-	Tank _tank;
-	AStar _route;
+	struct Location
+	{
+		int x;
+		int y;
+		Direction direction;
+	};
 
+	std::vector<Location> _locations;
+	std::vector<Tank* > _tanks;
 };
 
 inline Robot::Robot()
 {
-	_tank.setGroup(1);
-	this->appendChild(&_tank);
 }
 
-inline void Robot::setMap(TileMap* map)
+inline void Robot::add(Tank* tank)
 {
-	_tank.setTileMap(map);
-	_route.resize(map->colum(), map->row());
+	_tanks.push_back(tank);
+	this->appendChild(tank);
 }
 
-inline bool Robot::init()
+inline void Robot::addRebornLocation(int x, int y, Direction direction)
 {
-	_uptime = rand()%8000+1000;
-	_tank.setPosition(rand()%30 * 16, rand()%30 * 16);
-	return Object::init();
-};
+	Location location;
+	location.x = x;
+	location.y = y;
+	location.direction = direction;
 
-inline void Robot::reset()
+	_locations.push_back(location);
+}
+
+inline void Robot::randRebornATank()
 {
-	_uptime = rand()%8000+1000;
-	_tank.setPosition(rand()%25 * 16, rand()%25 * 16);
-	_tank.setActive(true);
-	_tank.setVisiable(true);
+	for(unsigned int i=0; i<_tanks.size(); i++)
+	{
+		Tank* tank = _tanks[i];
+		if(!tank->lived())
+		{
+			Location& location = _locations[rand()%_locations.size()];
+
+			tank->relocation(location.x, location.y);
+			tank->turn(location.direction);
+			tank->reborn();
+			return ;
+		}
+	}
+}
+
+inline void Robot::rebornAllTanks()
+{
+	for(unsigned int i=0; i<_tanks.size(); i++)
+	{
+		Tank* tank = _tanks[i];
+		Location& location = _locations[rand()%_locations.size()];
+
+		tank->relocation(location.x, location.y);
+		tank->turn(location.direction);
+		tank->reborn();
+	}
 }
 
 inline void Robot::update(unsigned int dt)
 {
-	if(!_tank.moving())
-	{
-		int times = 0; // A* Ñ°Â·´ÎÊý
-		while((_route.way().size() == 0) && times > 0)
-		{
-			TileMap* tilemap = _tank.tilemap();
-			_route.begin(_tank.x()/tilemap->tilewidth(), _tank.y()/tilemap->tileheight());
-			_route.target(rand()%tilemap->colum(), rand()%tilemap->row());
-			if(_route.find(tilemap))
-				break;
-
-			times--;
-		}
-
-		if(_route.way().size() > 0)
-		{
-			int x = _route.way()[0]->x * _tank.tilemap()->tilewidth();
-			int y = _route.way()[0]->y * _tank.tilemap()->tileheight();
-
-			if(_tank.x() < x)
-				_tank.turnRight();
-			else if(_tank.x() > x)
-				_tank.turnLeft();
-			else if(_tank.y() < y)
-				_tank.turnDown();
-			else if(_tank.y() > y)
-				_tank.turnUp();
-			else 
-				_route.way().erase(_route.way().begin());
-		}
-		else
-		{
-			if(rand()%100 < 20)
-				_tank.turn((Direction)(rand()%4));
-
-			_tank.moveForword();
-		}
-	}
-
-	_uptime -= dt;
-	if(_uptime < 0)
-	{
-		_uptime = rand()%3000+500;
-		_tank.fire();
-	}
-
 	Object::update(dt);
+
+	for(unsigned int i=0; i<_tanks.size(); i++)
+	{
+		Tank* tank = _tanks[i];
+
+		if(!tank->moving() && tank->actived())
+		{
+			if(rand()%100 < 15)
+				tank->turn((Direction)(rand()%4));
+
+			if(rand()%100 < 90)
+				tank->moveForword();
+
+			if(rand()%100 < 15)
+				tank->fire();
+		}
+	}
 }
 
 #endif

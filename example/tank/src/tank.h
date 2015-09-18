@@ -15,23 +15,29 @@ enum Direction
 	DIR_STOP
 };
 
+#define MAX_WEAPON_LEVEL 5
+#define MAX_LEVEL 3
+
 class Tank : public Object
 {
 public: 
 	Tank();
 	
 	void fire();
-	void blowUp();
+	void explode();
 
-	void setGroup(int group);
-	int  getGroup();
+	void relocation(int x, int y);
+	void reborn();
+	bool lived();
+	void upgrade();
 
 	void turnLeft();
 	void turnRight();
 	void turnUp();
 	void turnDown();
 
-	void unmarkOnMap();
+	void setGroup(int group);
+	int  getGroup();
 
 	void moveForword();
 	void turn(Direction direction);
@@ -39,41 +45,70 @@ public:
 
 	bool moving();
 	void setTileMap(TileMap* tilemap);
-	TileMap* tilemap();
+	TileMap* map();
 
 	virtual void draw(SDL_Renderer * renderer);
-	virtual bool init();
 	virtual void update(unsigned int dt);
 
 private:
+	void markObjectOnMap(int x, int y, void* object = 0);
 	void move();
 	bool blocked();
 
+	void initData();
+
+	bool _alive;
 	bool _explorer;
-	bool _updatePosition;
 	bool _moving;
-	Direction _direction;
+
+	int _speed;
+	int _level;
+	int _weaponsLevel;
 
 	int _group;
-	int _speed;
-	int _step;
-	int _uptime;
-
 	int _width;
 	int _height;
 
 	Image _image;
+	Direction _direction;
 	TileMap* _tilemap;
 	std::vector<Bullet*> _bullets;
-	std::vector<Bullet*> _unuserdBullets;
+	std::vector<Bullet*> _surplusBullets;
 };
+
+inline void Tank::initData()
+{
+	_alive = true;
+	_moving = false;
+	_explorer = true;
+	_speed = 1;
+
+	_level = 0;
+	_weaponsLevel = 1;
+}
+
+inline void Tank::upgrade()
+{
+	if(_weaponsLevel < MAX_WEAPON_LEVEL)
+		_weaponsLevel++;
+
+	if(_level < MAX_LEVEL)
+		_level++;
+
+	_speed = _level*2;
+}
+
+inline bool Tank::lived()
+{
+	return _alive;
+}
 
 inline bool Tank::moving()
 {
 	return _moving;
 }
 
-inline TileMap* Tank::tilemap()
+inline TileMap* Tank::map()
 {
 	return _tilemap;
 }
@@ -96,6 +131,9 @@ inline void Tank::moveForword()
 inline void Tank::setGroup(int group)
 {
 	_group = group;
+
+	if(_group == 1)
+		_image.load("tank.png");
 }
 
 inline int  Tank::getGroup()

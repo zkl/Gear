@@ -28,7 +28,6 @@ bool Runner::init(const char * title, int w, int h, int flags)
 		return false;
 
 	m_world = new World();
-	m_world->init();
 
 	//Sprite * sprite0 = Sprite::create(0, 0, 115, 117, 6, 1, "image/a1.png");
 	//Sprite * sprite1 = Sprite::create(0, 0, 192, 192, 10, 5, "image/66RPG_sc_03.png");

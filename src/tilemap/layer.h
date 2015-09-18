@@ -9,7 +9,7 @@
 class Layer 
 {
 public:
-	Layer(std::string name);
+	Layer();
 
 	int setGid(int postion, int gid);
 	int getGid(int postion);

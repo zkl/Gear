@@ -2,6 +2,7 @@
 #include "gamescreen.h"
 #include "startscreen.h"
 #include "gameoverscreen.h"
+#include "winscreen.h"
 
 int main(int argc, char * argv[])
 {
@@ -10,6 +11,7 @@ int main(int argc, char * argv[])
 	Director::getDirector()->addScreen("Menu", new StartScreen());
 	Director::getDirector()->addScreen("Game", new GameScreen());
 	Director::getDirector()->addScreen("GameOver", new GameOverScreen());
+	Director::getDirector()->addScreen("Win", new WinScreen());
 
 	Director::getDirector()->changeScreen("Menu");
 

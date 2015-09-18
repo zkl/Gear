@@ -116,6 +116,7 @@
     <ClInclude Include="..\..\src\robot.h" />
     <ClInclude Include="..\..\src\startscreen.h" />
     <ClInclude Include="..\..\src\tank.h" />
+    <ClInclude Include="..\..\src\winscreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\ai\genalg.cpp" />

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "tilemap.h"
 
 TileMap::TileMap() : 
@@ -12,15 +13,34 @@ TileMap::TileMap() :
 
 TileMap::~TileMap()
 {
+	this->clear();
+}
+
+void TileMap::clear()
+{
+	for(std::map<std::string, Layer * >::iterator it = _layers.begin(); it != _layers.end(); it++)
+		delete it->second;
+
+	for(std::map<std::string, Tileset*>::iterator it = _tilesets.begin(); it!= _tilesets.end(); it++)
+		delete it->second;
+
+	_layers.clear();
+	_tilesets.clear();
+	_objects.clear();
 }
 
 bool TileMap::load(const char * file)
 {
+	this->clear();
+
 	XMLDocument document;
 	document.LoadFile(file);
 	XMLElement * root = document.FirstChildElement("map");
 	if(root != 0)
 	{
+		// base path
+		_splitpath(file, 0, _basePath, 0, 0);
+
 		analyzeMapInfo(root);
 		for(XMLElement* e = root->FirstChildElement(); e != 0; 
 			e = e->NextSiblingElement())
@@ -69,15 +89,26 @@ void TileMap::analyzeTileset(XMLElement * e)
 	if(ie != 0)
 		file = ie->Attribute("source");
 
-	_tilesets[name] = new Tileset(name, fgid, tileWidth, tileHeight, file);
+	char tilefile[1024];
+	strcpy(tilefile, _basePath);
+	strcat(tilefile, "/");
+	strcat(tilefile, file);
+	_tilesets[name] = new Tileset(name, fgid, tileWidth, tileHeight, tilefile);
 }
 
 void TileMap::anylyzeLayers(XMLElement * e)
 {
 	XMLElement * data = e->FirstChildElement("data");
 	
-	Layer * layer = new Layer(e->Attribute("name"));
-	_layers.push_back(layer);
+	const char* name = e->Attribute("name");
+	if(name == 0)
+	{
+		SDL_Log("TileMap::anylyzeLayers erro");
+		return ;
+	}
+
+	Layer * layer = new Layer();
+	_layers[name] = layer;
 
 	if(data != 0)
 	{
@@ -122,20 +153,26 @@ void TileMap::anylyzeImageLayer(XMLElement * e)
 	if(data != 0)
 	{
 		const char * file = data->Attribute("source");
-		ImageLayer * layer = new ImageLayer(file);
+
+
+		char imageFile[1024];
+		strcpy(imageFile, _basePath);
+		strcat(imageFile, "/");
+		strcat(imageFile, file);
+		ImageLayer * layer = new ImageLayer(imageFile);
 
 		layer->move(x, y);
 		layer->copy(_image.surface());
 	}
 }
 
-Tileset * TileMap::tilesetOfGid(int gid)
+Tileset * TileMap::findTilesetByGid(int gid)
 {
 	if(_tilesets.size() == 0 || gid <= 0)
 		return 0;
 
 	std::map<std::string, Tileset*>::iterator max = _tilesets.begin();
-	std::map<std::string, Tileset*>::iterator it = _tilesets.begin();
+	std::map<std::string, Tileset*>::iterator it  = _tilesets.begin();
 	while(it != _tilesets.end())
 	{
 		if(gid < it->second->fgid())
@@ -151,19 +188,20 @@ Tileset * TileMap::tilesetOfGid(int gid)
 }
 void TileMap::drawlayer(Layer * layer)
 {
-	for(unsigned int i=0; i<_layers.size(); i++)
+	for(std::map<std::string, Layer*>::iterator it = _layers.begin(); it!=_layers.end(); it++)
 	{
-		std::pair<int, int> p = _layers[i]->firstGid();
+		Layer* layer = it->second;
+		std::pair<int, int> p = layer->firstGid();
 		while(p.second != 0)
 		{
-			Tileset * set = tilesetOfGid(p.second);	
+			Tileset * set = findTilesetByGid(p.second);	
 			if(set)
 			{
 				set->copy(_image.surface(), ((p.first)%_w)*_tileWidth, 
 					((p.first)/_w)*_tileHeight, p.second);
 			}
 
-			p = _layers[i]->nextGid();
+			p = layer->nextGid();
 		}
 	}
 	_image.update();
@@ -190,10 +228,10 @@ bool TileMap::setGid(int x, int y, int gid)
 
 	int position = x/_tileWidth + y/_tileHeight*_w;
 
-	Layer* layer = _layers[0];
+	Layer* layer = _layers.begin()->second;
 	layer->setGid(position, gid);
 
-	Tileset * tileset = tilesetOfGid(gid);	
+	Tileset * tileset = findTilesetByGid(gid);	
 	if(tileset && gid != 0)
 		tileset->copy(_image.surface(), rect.x, rect.y, gid);
 

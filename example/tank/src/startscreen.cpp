@@ -15,7 +15,7 @@ void StartScreen::begin()
 void StartScreen::update(unsigned int )
 {
 	if(_height > 0)
-		_height -= 2;
+		_height -= 4;
 	else
 		_height = 0;
 }

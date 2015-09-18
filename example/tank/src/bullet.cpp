@@ -9,8 +9,16 @@ Bullet::Bullet() :
 {
 	_bomb.setActive(false);
 	_bomb.setVisiable(false);
+	_bomb.setFps(15);
+
+	Image bombImage("bob.png");
+	_bomb.addFrames(&bombImage, 0, 0, 64, 64, 5, 5);
+
 	this->setActive(false);
 	this->setVisiable(false);
+	this->appendChild(&_bomb);
+
+	_image.load("bullet.png");
 }
 
 void Bullet::launch(int direction)
@@ -45,24 +53,6 @@ void Bullet::explode()
 	_bomb.setActive();
 	_bomb.setVisiable();
 	_bomb.play();
-}
-
-bool Bullet::init()
-{
-	Image bombImage("bob.png");
-	_bomb.addFrames(&bombImage, 0, 0, 64, 64, 5, 5);
-	this->appendChild(&_bomb);
-
-	_bomb.setActive(false);
-	_bomb.setVisiable(false);
-	_bomb.setFps(15);
-
-	this->setActive(false);
-	this->setVisiable(false);
-
-	_image.load("bullet.png");
-
-	return !_image.empty();
 }
 
 void Bullet::draw(SDL_Renderer * renderer)

@@ -35,21 +35,6 @@ bool Object::appendChild(Object * child)
 	return false;
 }
 
-bool Object::init()
-{
-	bool ok = true;;
-	std::vector<Object *>::iterator it = _children.begin();
-	while(it != _children.end())
-	{
-		if(!(*it)->init())
-			ok = false;
-
-		it++;
-	}
-
-	return ok;
-}
-
 void Object::draw(SDL_Renderer * renderer)
 {
 	if(_visiable)

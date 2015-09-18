@@ -30,8 +30,10 @@ inline void ObjectLayer::resize(int size)
 
 inline void ObjectLayer::setObject(int position, void* obj)
 {
-	_objects[position] = obj;
+	if(position < 0)
+		printf("ObjectLayer::getObject error -> position < 0\n");
 
+	_objects[position] = obj;
 }
 
 inline void* ObjectLayer::getObject(int position)
