@@ -21,13 +21,24 @@ bool GameScreen::init()
 	_world.appendChild(&_tank);
 	_world.appendChild(&_robot);
 
-	for(int i=0; i<MAX_TANKS_ONCE; i++)
+	for(int i=0; i<MAX_TANKS_ONCE / 2; i++)
 	{
 		Tank* tank = new Tank();
 
 		tank->upgrade();
 		tank->setTileMap(&_tilemap);
 		tank->setGroup(1);
+
+		_robot.add(tank);
+	}
+
+	for(int i=0; i<MAX_TANKS_ONCE / 2; i++)
+	{
+		Tank* tank = new Tank();
+
+		tank->upgrade();
+		tank->setTileMap(&_tilemap);
+		tank->setGroup(2);
 
 		_robot.add(tank);
 	}
@@ -40,7 +51,6 @@ bool GameScreen::init()
 	_tank.setTileMap(&_tilemap);
 
 	_tank.upgrade();
-	_tank.upgrade();
 
 	return true;
 }
@@ -49,7 +59,7 @@ void GameScreen::begin()
 {
 	_uptime = 0;
 	_lived  = MAX_TANKS_ONCE;
-	_max    = 20;
+	_max    = 50;
 
 	char mapfile[1024];
 	sprintf(mapfile, "maps/level%d.tmx", _level);
@@ -64,7 +74,6 @@ void GameScreen::begin()
 		if(!_tank.lived())
 		{
 			_tank.reborn();
-			_tank.upgrade();
 			_tank.upgrade();
 		}
 

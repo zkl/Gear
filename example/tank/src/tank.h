@@ -141,8 +141,12 @@ inline void Tank::setGroup(int group)
 {
 	_group = group;
 
+	if(_group == 0)
+		_image.load("tank_red.png");
 	if(_group == 1)
-		_image.load("tank.png");
+		_image.load("tank_green.png");
+	if(_group == 2)
+		_image.load("tank_black.png");
 }
 
 inline int  Tank::getGroup()
