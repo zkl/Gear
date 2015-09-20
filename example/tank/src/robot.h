@@ -53,7 +53,7 @@ inline void Robot::randRebornATank()
 	for(unsigned int i=0; i<_tanks.size(); i++)
 	{
 		Tank* tank = _tanks[i];
-		if(!tank->lived())
+		if(!tank->actived())
 		{
 			Location& location = _locations[rand()%_locations.size()];
 

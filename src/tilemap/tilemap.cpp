@@ -39,7 +39,15 @@ bool TileMap::load(const char * file)
 	if(root != 0)
 	{
 		// base path
-		_splitpath(file, 0, _basePath, 0, 0);
+		strcpy(_basePath, file);
+		char* p = &_basePath[strlen(file)-1];
+		while(p != _basePath && *p != '/')
+			p--;
+
+		if(*p == '/')
+			*p = 0;
+
+		//_splitpath(file, 0, _basePath, 0, 0);
 
 		analyzeMapInfo(root);
 		for(XMLElement* e = root->FirstChildElement(); e != 0; 
@@ -188,9 +196,9 @@ Tileset * TileMap::findTilesetByGid(int gid)
 }
 void TileMap::drawlayer(Layer * layer)
 {
-	for(std::map<std::string, Layer*>::iterator it = _layers.begin(); it!=_layers.end(); it++)
-	{
-		Layer* layer = it->second;
+	//for(std::map<std::string, Layer*>::iterator it = _layers.begin(); it!=_layers.end(); it++)
+	//{
+	//	Layer* layer = it->second;
 		std::pair<int, int> p = layer->firstGid();
 		while(p.second != 0)
 		{
@@ -203,7 +211,7 @@ void TileMap::drawlayer(Layer * layer)
 
 			p = layer->nextGid();
 		}
-	}
+	//}
 	_image.update();
 }
 

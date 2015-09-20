@@ -7,13 +7,10 @@ Tank::Tank() :
 	_group(0),
 	_width(16),
 	_height(16),
-	_tilemap(0),
-	_direction(DIR_DOWN)
+	_direction(DIR_DOWN),
+	_tilemap(0)
 {
 	this->initData();
-
-	_surplusBullets.reserve(MAX_WEAPON_LEVEL);
-	_bullets.reserve(MAX_WEAPON_LEVEL);
 
 	for(int i=0; i<MAX_WEAPON_LEVEL; i++)
 		_surplusBullets.push_back(new Bullet());
@@ -21,31 +18,43 @@ Tank::Tank() :
 	for(unsigned int i=0; i<_surplusBullets.size(); i++)
 		this->appendChild(_surplusBullets[i]);
 
+	_bomb.addFrame(new Image("image/01.png"));
+	_bomb.addFrame(new Image("image/02.png"));
+	_bomb.addFrame(new Image("image/03.png"));
+	_bomb.addFrame(new Image("image/04.png"));
+	_bomb.addFrame(new Image("image/05.png"));
+	_bomb.addFrame(new Image("image/06.png"));
+	_bomb.setFps(10);
+	_bomb.setVisiable(false);
+	_bomb.setActive(false);
+
+	this->appendChild(&_bomb);
+
 	_image.load("tank_red.png");
 }
 
 void Tank::turnLeft()
 {
-	_moving = true;
-	_direction = DIR_LEFT;
+	this->turn(DIR_LEFT);
+	this->moveForword();
 }
 
 void Tank::turnRight()
 {
-	_moving = true;
-	_direction = DIR_RIGHT;
+	this->turn(DIR_RIGHT);
+	this->moveForword();
 }
 
 void Tank::turnUp()
 {
-	_moving = true;
-	_direction = DIR_UP;
+	this->turn(DIR_UP);
+	this->moveForword();
 }
 
 void Tank::turnDown()
 {
-	_moving = true;
-	_direction = DIR_DOWN;
+	this->turn(DIR_DOWN);
+	this->moveForword();
 }
 
 void Tank::fire()
@@ -53,6 +62,7 @@ void Tank::fire()
 	if(_bullets.size() < (unsigned int)_weaponsLevel)
 	{
 		Bullet* bullet = _surplusBullets[0];
+
 		bullet->setPosition(_x, _y);
 		bullet->launch(_direction);
 
@@ -112,51 +122,46 @@ void Tank::update(unsigned int dt)
 			}
 			it++;
 		}
-		else
+		else if(!bullet.actived())
 		{
 			_surplusBullets.push_back(*it);
 			it = _bullets.erase(it);
 		}
+		else // exploding
+		{
+			it++;
+		}
 	}
 
-	if(!_alive && _bullets.size() == 0)
+	if(!_alive && _bullets.size() == 0 && !_bomb.playing())
 	{
-		this->setVisiable(false);
+		_bomb.setVisiable(false);
 		this->setActive(false);
-		this->markObjectOnMap(_x, _y, 0); // clear 
+		this->setVisiable(false);
+
 		EventHandler::instance()->dispatch(0, this);
 	}
 }
 
 void Tank::draw(SDL_Renderer * renderer)
 {
-	_image.draw(renderer, _x, _y);
 	Object::draw(renderer);
+
+	if(_alive)
+		_image.draw(renderer, _x, _y);
 }
 
 void Tank::move()
 {
 	int x = _x, y = _y;
 	if(_direction == DIR_LEFT)
-	{
-		_image.rotation(270);
 		_x -= _speed;
-	}
 	else if(_direction == DIR_RIGHT)
-	{
-		_image.rotation(90);
 		_x += _speed;
-	}
 	else if(_direction == DIR_UP)
-	{
-		_image.rotation(0);
 		_y -= _speed;
-	}
 	else if(_direction == DIR_DOWN)
-	{
-		_image.rotation(180);
 		_y += _speed;
-	}
 
 	if(x < 0 || y < 0)
 	{
@@ -167,7 +172,6 @@ void Tank::move()
 
 	if(_explorer)
 	{
-
 		if(blocked())
 		{
 			_x = x;
@@ -179,7 +183,7 @@ void Tank::move()
 			int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
 			Tank* tank1 = (Tank*)_tilemap->getObjectLayer()->getObject(p1);
 			Tank* tank2 = (Tank*)_tilemap->getObjectLayer()->getObject(p2);
-			if(tank1 != this && tank1 != 0 || tank2 != this && tank2 != 0)
+			if((tank1 != this && tank1 != 0) || (tank2 != this && tank2 != 0))
 			{
 				_x = x;
 				_y = y;
@@ -228,6 +232,10 @@ void Tank::explode()
 	this->markObjectOnMap(_x, _y, 0); // clear 
 	for(unsigned int i=0; i<_bullets.size(); i++)
 		_bullets[i]->explode();
+
+	_bomb.setPosition(_x-50, _y-49);
+	_bomb.setVisiable();
+	_bomb.play();
 }
 
 void Tank::relocation(int x, int y)
@@ -250,6 +258,11 @@ void Tank::reborn()
 	this->setVisiable(true);
 	this->setActive(true);
 	this->markObjectOnMap(_x, _y, this);
+
+	if(_bomb.playing())
+		printf("Tank::reborn warning -> tank is exploding\n");
+
+	_bomb.setVisiable(false);
 }
 
 void Tank::markObjectOnMap(int x, int y, void* object)

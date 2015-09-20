@@ -70,6 +70,7 @@ private:
 	int _height;
 
 	Image _image;
+	Movie _bomb;
 	Direction _direction;
 	TileMap* _tilemap;
 	std::vector<Bullet*> _bullets;
@@ -121,6 +122,14 @@ inline Direction Tank::direction()
 inline void Tank::turn(Direction direction)
 {
 	_direction = direction;
+	if(_direction == DIR_LEFT)
+		_image.rotation(270);
+	else if(_direction == DIR_RIGHT)
+		_image.rotation(90);
+	else if(_direction == DIR_UP)
+		_image.rotation(0);
+	else if(_direction == DIR_DOWN)
+		_image.rotation(180);
 }
 
 inline void Tank::moveForword()

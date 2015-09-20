@@ -17,15 +17,22 @@ void Movie::addFrames(Image* image, int x, int y, int w, int h,
 
 void Movie::update(unsigned int dt)
 {
+	if(!_playing)
+		return ;
+
 	_uptime += dt;
 	if(_uptime >= _interval)
 	{
+		_frame++;
 		_uptime -= _interval;
-		if((unsigned int)++_frame >= _frames.size())
+		if((unsigned int)_frame >= _frames.size())
 		{
 			_frame = 0;
 			if(!_loop)
+			{
+				this->setActive(false);
 				_playing = false;
+			}
 		}
 	}
 }

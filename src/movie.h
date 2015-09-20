@@ -8,6 +8,8 @@
 class Movie : public  Object
 {
 public:
+	Movie();
+
 	void play();
 	void stop();
 	bool playing();
@@ -17,9 +19,7 @@ public:
 	void addFrames(Image* image, int x, int y, int w, int h,
 		int column, int frames);
 
-	Movie();
 	virtual void draw(SDL_Renderer * renderer);
-	virtual bool init();
 	virtual void update(unsigned int dt);
 private:
 	bool _loop;
@@ -39,13 +39,19 @@ inline Movie::Movie() :
 	_interval(1000/60)
 {
 }
+
 inline void Movie::play()
 {
 	_playing = true;
+	_uptime  = 0;
+
+	this->setActive();
+	this->setVisiable();
 }
 
 inline void Movie::stop()
 {
+	this->setActive(false);
 	_playing = false;
 }
 
@@ -62,12 +68,6 @@ inline void Movie::loop(bool loop)
 inline void Movie::setFps(int fps)
 {
 	_interval = 1000 / fps;
-}
-
-
-inline bool Movie::init()
-{
-	return true;
 }
 
 inline void Movie::addFrame(Image* frame)

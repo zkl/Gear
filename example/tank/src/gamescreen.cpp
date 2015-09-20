@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include "src/event/eventhandler.h"
 
-#define MAX_TANKS_ONCE 5
+#define MAX_TANKS_ONCE 10
 
 GameScreen::GameScreen() : 
-	_level(0),
-	_uptime(0)
+	_uptime(0),
+	_level(0)
 {	
 }
 
@@ -24,8 +24,11 @@ bool GameScreen::init()
 	for(int i=0; i<MAX_TANKS_ONCE; i++)
 	{
 		Tank* tank = new Tank();
+
+		tank->upgrade();
 		tank->setTileMap(&_tilemap);
 		tank->setGroup(1);
+
 		_robot.add(tank);
 	}
 
@@ -36,17 +39,20 @@ bool GameScreen::init()
 	_tank.setPosition(160, 160);
 	_tank.setTileMap(&_tilemap);
 
+	_tank.upgrade();
+	_tank.upgrade();
+
 	return true;
 }
 
 void GameScreen::begin()
 {
 	_uptime = 0;
-	_lived  = 0;
+	_lived  = MAX_TANKS_ONCE;
 	_max    = 20;
 
 	char mapfile[1024];
-	sprintf_s(mapfile, "maps/level%d.tmx", _level);
+	sprintf(mapfile, "maps/level%d.tmx", _level);
 	if(!_tilemap.load(mapfile))
 	{
 		Director::getDirector()->changeScreen("Menu");
@@ -56,11 +62,14 @@ void GameScreen::begin()
 		_robot.rebornAllTanks();
 
 		if(!_tank.lived())
+		{
 			_tank.reborn();
+			_tank.upgrade();
+			_tank.upgrade();
+		}
 
 		_tank.relocation((_tilemap.colum()-4)/2 * _tilemap.tilewidth(), _tilemap.height() - _tilemap.tileheight());
 		_tank.turn(DIR_UP);
-		_tank.upgrade();
 	}
 }
 

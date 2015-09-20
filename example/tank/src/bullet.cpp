@@ -7,8 +7,6 @@ Bullet::Bullet() :
 	_step(4),
 	_uptime(0)
 {
-	_bomb.setActive(false);
-	_bomb.setVisiable(false);
 	_bomb.setFps(15);
 
 	Image bombImage("bob.png");
@@ -16,39 +14,33 @@ Bullet::Bullet() :
 
 	this->setActive(false);
 	this->setVisiable(false);
-	this->appendChild(&_bomb);
 
+	this->appendChild(&_bomb);
 	_image.load("bullet.png");
 }
 
 void Bullet::launch(int direction)
 {
+	_bomb.setVisiable(false);
+
 	this->setVisiable();
 	this->setActive();
-	_direction = direction;
 
-	switch(_direction)
-	{
-	case DIR_RIGHT:
+	_direction = direction;
+	if(_direction == DIR_RIGHT)
 		_image.rotation(0);
-		break;
-	case DIR_LEFT:
+	else if(_direction == DIR_LEFT)
 		_image.rotation(180);
-		break;
-	case DIR_DOWN:
-		_image.rotation(90);
-		break;
-	case DIR_UP:
+	else if(_direction == DIR_UP)
 		_image.rotation(270);
-		break;
-	default:
-		break;
-	}
+	else 
+		_image.rotation(90);
 }
 
 void Bullet::explode()
 {
 	_exploding = true;
+
 	_bomb.setPosition(_x-32+8, _y-32+8);
 	_bomb.setActive();
 	_bomb.setVisiable();
@@ -59,8 +51,8 @@ void Bullet::draw(SDL_Renderer * renderer)
 {
 	if(!_exploding)
 		_image.draw(renderer, _x, _y);
-
-	Object::draw(renderer);
+	else 
+		Object::draw(renderer);
 }
 
 void Bullet::update(unsigned int dt)
@@ -79,25 +71,21 @@ void Bullet::update(unsigned int dt)
 			this->setActive(false);
 			this->setVisiable(false);
 		}
-		return ;
+		else
+		{
+			// bomb playing
+		}
 	}
-
-	switch(_direction)
+	else
 	{
-	case DIR_RIGHT:
-		_x += _step;
-		break;
-	case DIR_LEFT:
-		_x -= _step;
-		break;
-	case DIR_DOWN:
-		_y += _step;
-		break;
-	case DIR_UP:
-		_y -= _step;
-		break;
-	default:
-		break;
+		if(_direction == DIR_RIGHT)
+			_x += _step;
+		else if(_direction == DIR_LEFT)
+			_x -= _step;
+		else if(_direction == DIR_UP)
+			_y -= _step;
+		else 
+			_y += _step;
 	}
 }
 
