@@ -132,18 +132,14 @@ void GameScreen::handleEvent(const SDL_Event& event)
 		}
 		case SDL_KEYDOWN:
 		{
-			const Uint8* sta = SDL_GetKeyboardState(0);
-			if(sta[::SDL_SCANCODE_SPACE])
+			if(event.key.keysym.scancode == SDL_SCANCODE_SPACE)
 				_tank.fire();
 
-			if(sta[::SDL_SCANCODE_P])
-			{
+			if(event.key.keysym.scancode == SDL_SCANCODE_P)
 				_robot.setActive(false);
-			}
-			else if(sta[::SDL_SCANCODE_G])
-			{
-				_robot.setActive(true);
-			}
+			
+			if(event.key.keysym.scancode == SDL_SCANCODE_G)
+				_robot.setActive();
 
 			break;
 		}
