@@ -70,7 +70,7 @@ inline bool Image::load(const char* file)
 	_surface = IMG_Load(file);
 	if(_surface == 0)
 	{
-		printf("Image::load filled -> %s\n", file);
+		SDL_Log("Image::load filled -> %s\n", file);
 		return false;
 	}
 
