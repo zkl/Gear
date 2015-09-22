@@ -140,7 +140,11 @@ void TileMap::anylyzeLayers(XMLElement * e)
 			else if(*d == '\n')
 				d++;
 		};
-	};
+	}
+	else
+	{
+		return ;
+	}
 
 	drawlayer(layer);
 }
@@ -179,20 +183,16 @@ Tileset * TileMap::findTilesetByGid(int gid)
 	if(_tilesets.size() == 0 || gid <= 0)
 		return 0;
 
-	std::map<std::string, Tileset*>::iterator max = _tilesets.begin();
 	std::map<std::string, Tileset*>::iterator it  = _tilesets.begin();
 	while(it != _tilesets.end())
 	{
-		if(gid < it->second->fgid())
-			return (--it)->second;
-
-		if(max->second->fgid() < it->second->fgid())
-			max = it;
+		if(gid >= it->second->minGid() && gid < it->second->maxGid())
+			return it->second;
 
 		it++;
 	}
 
-	return max->second;
+	return 0;
 }
 void TileMap::drawlayer(Layer * layer)
 {

@@ -35,24 +35,36 @@ Tank::Tank() :
 
 void Tank::turnLeft()
 {
+	if(_moving)
+		return ;
+
 	this->turn(DIR_LEFT);
 	this->moveForword();
 }
 
 void Tank::turnRight()
 {
+	if(_moving )
+		return ;
+
 	this->turn(DIR_RIGHT);
 	this->moveForword();
 }
 
 void Tank::turnUp()
 {
+	if(_moving)
+		return ;
+
 	this->turn(DIR_UP);
 	this->moveForword();
 }
 
 void Tank::turnDown()
 {
+	if(_moving )
+		return ;
+
 	this->turn(DIR_DOWN);
 	this->moveForword();
 }
@@ -179,11 +191,14 @@ void Tank::move()
 		}
 		else
 		{
-			int p1 = _tilemap->convertPositionFromCoordinate(_x, _y);
-			int p2 = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
-			Tank* tank1 = (Tank*)_tilemap->getObjectLayer()->getObject(p1);
-			Tank* tank2 = (Tank*)_tilemap->getObjectLayer()->getObject(p2);
-			if((tank1 != this && tank1 != 0) || (tank2 != this && tank2 != 0))
+			int position = 0;
+			if(_direction == DIR_UP || _direction == DIR_LEFT)
+				position = _tilemap->convertPositionFromCoordinate(_x, _y);
+			else
+				position = _tilemap->convertPositionFromCoordinate(_x+15, _y+15);
+
+			Tank* tank = (Tank*)_tilemap->getObjectLayer()->getObject(position);
+			if((tank != this && tank != 0))
 			{
 				_x = x;
 				_y = y;

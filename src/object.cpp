@@ -6,7 +6,9 @@ Object::Object() :
 	_visiable(true),
 	_actived(true),
 	_x(0),
-	_y(0)
+	_y(0),
+	_id(0),
+	_type(0)
 {
 }
 

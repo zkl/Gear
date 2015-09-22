@@ -6,7 +6,8 @@ Tileset::Tileset(const std::string name, unsigned long fgid,
 	_tileWidth(tileWidth),
 	_tileHeight(tileHeight)
 {
-	_image.load(file);
+	if(_image.load(file))
+		_lastGid = _image.width()/_tileWidth * _image.height()/_tileHeight + _firsGid;
 }
 
 Tileset::~Tileset()

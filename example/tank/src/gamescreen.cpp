@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "src/event/eventhandler.h"
 
-#define MAX_TANKS_ONCE 10
+#define MAX_TANKS_ONCE 100
 
 GameScreen::GameScreen() : 
 	_uptime(0),
@@ -43,9 +43,8 @@ bool GameScreen::init()
 		_robot.add(tank);
 	}
 
-	_robot.addRebornLocation(0, 0, DIR_DOWN);
-	_robot.addRebornLocation(238, 0, DIR_DOWN);
-	_robot.addRebornLocation(624, 0, DIR_DOWN);
+	for(int i=0; i < 640; i += 16)
+		_robot.addRebornLocation(i, 0, DIR_DOWN);
 
 	_tank.setPosition(160, 160);
 	_tank.setTileMap(&_tilemap);
@@ -57,9 +56,10 @@ bool GameScreen::init()
 
 void GameScreen::begin()
 {
+	_automove = false;
 	_uptime = 0;
 	_lived  = MAX_TANKS_ONCE;
-	_max    = 50;
+	_max    = 300;
 
 	char mapfile[1024];
 	sprintf(mapfile, "maps/level%d.tmx", _level);
@@ -92,15 +92,33 @@ void GameScreen::update(unsigned int dt)
 
 	if(!_tank.moving())
 	{
-		const Uint8* sta = SDL_GetKeyboardState(0);
-		if(sta[::SDL_SCANCODE_W] || sta[::SDL_SCANCODE_UP])
-			_tank.turnUp();
-		else if(sta[::SDL_SCANCODE_S] || sta[SDL_SCANCODE_DOWN])
-			_tank.turnDown();
-		else if(sta[::SDL_SCANCODE_A] || sta[SDL_SCANCODE_LEFT])
-			_tank.turnLeft();
-		else if(sta[::SDL_SCANCODE_D] || sta[SDL_SCANCODE_RIGHT])
-			_tank.turnRight();
+		
+		const Uint8* state = SDL_GetKeyboardState(NULL);
+
+		if(state[SDL_SCANCODE_W] || state[SDL_SCANCODE_UP])
+		{
+			_tank.moveForword();
+			_tank.turn(DIR_UP);
+		}
+		else if(state[SDL_SCANCODE_S] || state[SDL_SCANCODE_DOWN])
+		{
+			_tank.moveForword();
+			_tank.turn(DIR_DOWN);
+		}
+		else if(state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
+		{
+			_tank.moveForword();
+			_tank.turn(DIR_LEFT);
+		}
+		else if(state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
+		{
+			_tank.moveForword();
+			_tank.turn(DIR_RIGHT);
+		}
+		
+		if(_automove)
+			_tank.moveForword();
+
 	}
 
 	_uptime += dt;
@@ -132,8 +150,13 @@ void GameScreen::handleEvent(const SDL_Event& event)
 		}
 		case SDL_KEYDOWN:
 		{
+			SDL_Scancode code = event.key.keysym.scancode;
+
 			if(event.key.keysym.scancode == SDL_SCANCODE_SPACE)
 				_tank.fire();
+
+			if(event.key.keysym.scancode == SDL_SCANCODE_E)
+				_automove = !_automove;
 
 			if(event.key.keysym.scancode == SDL_SCANCODE_P)
 				_robot.setActive(false);

@@ -4,7 +4,7 @@
 Bullet::Bullet() : 
 	_explorer(false),
 	_exploding(false),
-	_step(4),
+	_step(8),
 	_uptime(0)
 {
 	_bomb.setFps(15);

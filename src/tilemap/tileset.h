@@ -13,19 +13,26 @@ public:
 		int tileWidth, int tileHeight, const char* file);
 	~Tileset();
 
-	inline int fgid();
+	inline int minGid();
+	inline int maxGid();
 	void copy(SDL_Surface* surface, int x, int y, unsigned long gid);
 
 private:
 	int _firsGid;
+	int _lastGid;
 	int _tileWidth, _tileHeight;
 
 	Image _image;
 };
 
-inline int Tileset::fgid()
+inline int Tileset::minGid()
 {
 	return _firsGid;
+}
+
+inline int Tileset::maxGid()
+{
+	return _lastGid;
 }
 
 #endif

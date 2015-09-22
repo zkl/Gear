@@ -27,6 +27,7 @@ private:
 	int _max;
 	int _lived;
 	int _level;
+	bool _automove;
 	Tank  _tank;
 	World _world;
 	TileMap _tilemap;

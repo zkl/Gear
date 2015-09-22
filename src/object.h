@@ -14,11 +14,18 @@ public:
 
 	int x();
 	int y();
-	bool visiable();
-	bool actived();
-	void setActive(bool active = true);
-	void setPosition(int x, int y);
-	void setVisiable(bool visiable = true);
+
+	virtual bool visiable();
+	virtual bool actived();
+	virtual void setActive(bool active = true);
+	virtual void setPosition(int x, int y);
+	virtual void setVisiable(bool visiable = true);
+
+	virtual void setId(int id);
+	virtual int  id();
+	virtual void setType(int type);
+	virtual int  type();
+
 	bool appendChild(Object * child);
 	Object * parent(){return _parent;}
 
@@ -32,6 +39,8 @@ protected:
 private:
 	void removeChild(Object * child);
 
+	int  _id;
+	int  _type;
 	bool _visiable;
 	bool _actived;
 	Object * _parent;
@@ -74,5 +83,25 @@ inline void Object::setVisiable(bool visiable)
 	_visiable = visiable;	
 }
 
+
+inline void Object::setId(int id)
+{
+	_id = id;
+}
+
+inline int Object::id()
+{
+	return _id;
+}
+
+inline void Object::setType(int type)
+{
+	_type = type;
+}
+
+inline int Object::type()
+{
+	return _type;
+}
 
 #endif
