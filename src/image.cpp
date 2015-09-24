@@ -87,6 +87,7 @@ void Image::draw(SDL_Renderer * renderer, int x, int y, int w, int h)
 	{
 		_update = false;
 		if(_texture != 0)
+		//	SDL_UpdateTexture(_texture, 0, _surface->pixels, _surface->pitch);
 			SDL_DestroyTexture(_texture);
 
 		_texture = SDL_CreateTextureFromSurface(renderer, _surface);  
