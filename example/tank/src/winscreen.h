@@ -47,7 +47,7 @@ inline void WinScreen::handleEvent(const SDL_Event& event)
 		return ;
 
 	if(event.type == SDL_KEYDOWN)
-		Director::getDirector()->changeScreen("Menu");
+		Director::getDirector()->changeScreen("Game");
 }
 
 #endif

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "src/event/eventhandler.h"
 
-#define MAX_TANKS_ONCE 100
+#define MAX_TANKS_ONCE 6
 
 GameScreen::GameScreen() : 
 	_uptime(0),
@@ -21,27 +21,17 @@ bool GameScreen::init()
 	_world.appendChild(&_tank);
 	_world.appendChild(&_robot);
 
-	for(int i=0; i<MAX_TANKS_ONCE / 2; i++)
+	for(int i=0; i<MAX_TANKS_ONCE; i++)
 	{
 		Tank* tank = new Tank();
 
 		tank->upgrade();
 		tank->setTileMap(&_tilemap);
-		tank->setGroup(1);
+		tank->setGroup(i%2+1);
 
 		_robot.add(tank);
 	}
 
-	for(int i=0; i<MAX_TANKS_ONCE / 2; i++)
-	{
-		Tank* tank = new Tank();
-
-		tank->upgrade();
-		tank->setTileMap(&_tilemap);
-		tank->setGroup(2);
-
-		_robot.add(tank);
-	}
 
 	for(int i=0; i < 640; i += 16)
 		_robot.addRebornLocation(i, 0, DIR_DOWN);
@@ -59,10 +49,10 @@ void GameScreen::begin()
 	_automove = false;
 	_uptime = 0;
 	_lived  = MAX_TANKS_ONCE;
-	_max    = 300;
+	_max    = 20;
 
 	char mapfile[1024];
-	sprintf(mapfile, "maps/level%d.tmx", _level);
+	sprintf(mapfile, "maps/level%d.tmx", _level++);
 	if(!_tilemap.load(mapfile))
 	{
 		Director::getDirector()->changeScreen("Menu");
