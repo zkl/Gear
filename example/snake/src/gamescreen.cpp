@@ -5,7 +5,6 @@ bool GameScreen::init()
 	_tilemap.load("map.tmx");
 	_world.appendChild(&_tilemap);
 	_world.appendChild(&_snake);
-	_world.init();
 
 	_snake.uplevel();
 	_snake.uplevel();
@@ -20,7 +19,7 @@ void GameScreen::update(unsigned int dt)
 	_world.update(dt);
 	if(_snake.dead() || 
 		_tilemap.getGid(_snake.x(), _snake.y()) != 0 || 
-		_tilemap.getGid(_snake.x()+_tilemap.tilsetWidth()-1, _snake.y()+_tilemap.tilsetHeight()-1))
+		_tilemap.getGid(_snake.x()+_tilemap.tilewidth()-1, _snake.y()+_tilemap.tileheight()-1))
 	{
 		_snake.setActive(false);
 	}

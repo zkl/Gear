@@ -60,7 +60,9 @@ inline Snake::Snake() :
 	_gridHeight(16),
 	_gridWidth(16)
 {
+	this->init();
 }
+
 inline void Snake::uplevel()
 {
 	_level++;
