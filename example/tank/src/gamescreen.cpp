@@ -76,6 +76,11 @@ void GameScreen::end()
 {
 }
 
+/**
+* @brief update 
+*
+* @param dt
+*/
 void GameScreen::update(unsigned int dt)
 {
 	_world.update(dt);
@@ -140,7 +145,7 @@ void GameScreen::handleEvent(const SDL_Event& event)
 		}
 		case SDL_KEYDOWN:
 		{
-			SDL_Scancode code = event.key.keysym.scancode;
+			//SDL_Scancode code = event.key.keysym.scancode;
 
 			if(event.key.keysym.scancode == SDL_SCANCODE_SPACE)
 				_tank.fire();
