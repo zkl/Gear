@@ -13,8 +13,10 @@ public:
 	void play();
 	void stop();
 	bool playing();
-	void loop(bool loop = true);
+
 	void setFps(int fps);
+	void setLoop(bool loop = true);
+
 	void addFrame(Image* frame);
 	void addFrames(Image* image, int x, int y, int w, int h,
 		int column, int frames);
@@ -60,7 +62,7 @@ inline bool Movie::playing()
 	return _playing;
 }
 
-inline void Movie::loop(bool loop)
+inline void Movie::setLoop(bool loop)
 {
 	_loop = loop;
 }
