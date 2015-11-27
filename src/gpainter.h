@@ -3,13 +3,19 @@
 
 class GPainter
 {
+	friend class GImage;
+
 public:
-	void draw();
-	void drawImage();
-	void drawLine();
+	void draw(const GImage& image, int x, int y);
 
 private:
+	GPainter(GImage* image);
 
+	GImage* _image;
 };
+
+inline GPainter::GPainter(GImage* image) : _image(image)
+{
+}
 
 #endif

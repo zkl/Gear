@@ -82,6 +82,8 @@
     <ClCompile Include="..\..\..\..\src\animate.cpp" />
     <ClCompile Include="..\..\..\..\src\animation.cpp" />
     <ClCompile Include="..\..\..\..\src\color.cpp" />
+    <ClCompile Include="..\..\..\..\src\gimage.cpp" />
+    <ClCompile Include="..\..\..\..\src\gpainter.cpp" />
     <ClCompile Include="..\..\..\..\src\image.cpp" />
     <ClCompile Include="..\..\..\..\src\movie.cpp" />
     <ClCompile Include="..\..\..\..\src\object.cpp" />
@@ -103,6 +105,7 @@
     <ClInclude Include="..\..\..\..\src\color.h" />
     <ClInclude Include="..\..\..\..\src\director.h" />
     <ClInclude Include="..\..\..\..\src\drawable.h" />
+    <ClInclude Include="..\..\..\..\src\gimage.h" />
     <ClInclude Include="..\..\..\..\src\gpainter.h" />
     <ClInclude Include="..\..\..\..\src\image.h" />
     <ClInclude Include="..\..\..\..\src\movie.h" />

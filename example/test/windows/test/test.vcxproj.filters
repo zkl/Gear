@@ -72,6 +72,12 @@
     <ClCompile Include="..\..\..\..\src\tilemap\tileset.cpp">
       <Filter>Gear\Tilemap</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\gimage.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\gpainter.cpp">
+      <Filter>Gear</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\screen\menu.h">
@@ -150,6 +156,9 @@
       <Filter>Gear\Tilemap</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\gpainter.h">
+      <Filter>Gear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\gimage.h">
       <Filter>Gear</Filter>
     </ClInclude>
   </ItemGroup>

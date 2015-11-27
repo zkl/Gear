@@ -35,6 +35,7 @@ public:
 private:
 	bool _update;
 	double _angle;
+
 	SDL_Point _center;
 	SDL_RendererFlip _flip;
 	SDL_Texture * _texture;
