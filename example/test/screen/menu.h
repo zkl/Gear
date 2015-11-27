@@ -21,7 +21,7 @@ inline bool Menu::init()
 	_image->resize(100, 100);
 
 	Image image;
-	image.load("image/bg.jpg");
+	image.load("bg.jpg");
 
 	image.drawEx(_image->surface(), 10, 10, 100, 100, 0, 0, 100, 100);
 

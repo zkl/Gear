@@ -36,7 +36,7 @@ inline bool Game::init()
 	//Image image("om.png");
 	_movie.addFrame(&_image);
 	//_movie.addFrames(&image, 0, 0, 163, 133, 2, 6);
-	_movie.loop();
+	_movie.setLoop();
 	_movie.play();
 	_movie.setActive();
 	_movie.setPosition(100, 200);

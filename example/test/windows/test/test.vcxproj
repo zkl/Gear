@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AB194FF2-96FB-45D4-9CA1-8C8F753D1DCE}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>test</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>E:\lib\SDL2-2.0.3\;E:\lib\SDL2_image-2.0.0;E:\lib\SDL2-2.0.3\SDL2;E:\lib\tinyxml2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\lib\SDL2_image-2.0.0\lib\x86;E:\lib\SDL2-2.0.3\lib\x86;E:\lib\tinyxml2\Win32-Debug-Dll;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2_image.lib;SDL2.lib;SDL2main.lib;tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\animate.cpp" />
+    <ClCompile Include="..\..\..\..\src\animation.cpp" />
+    <ClCompile Include="..\..\..\..\src\color.cpp" />
+    <ClCompile Include="..\..\..\..\src\image.cpp" />
+    <ClCompile Include="..\..\..\..\src\movie.cpp" />
+    <ClCompile Include="..\..\..\..\src\object.cpp" />
+    <ClCompile Include="..\..\..\..\src\objectpool.cpp" />
+    <ClCompile Include="..\..\..\..\src\runner.cpp" />
+    <ClCompile Include="..\..\..\..\src\sdlgame.cpp" />
+    <ClCompile Include="..\..\..\..\src\sprite.cpp" />
+    <ClCompile Include="..\..\..\..\src\spritesheet.cpp" />
+    <ClCompile Include="..\..\..\..\src\tilemap\imagelayer.cpp" />
+    <ClCompile Include="..\..\..\..\src\tilemap\layer.cpp" />
+    <ClCompile Include="..\..\..\..\src\tilemap\tilemap.cpp" />
+    <ClCompile Include="..\..\..\..\src\tilemap\tileset.cpp" />
+    <ClCompile Include="..\..\..\..\src\world.cpp" />
+    <ClCompile Include="..\..\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\animate.h" />
+    <ClInclude Include="..\..\..\..\src\animation.h" />
+    <ClInclude Include="..\..\..\..\src\color.h" />
+    <ClInclude Include="..\..\..\..\src\director.h" />
+    <ClInclude Include="..\..\..\..\src\drawable.h" />
+    <ClInclude Include="..\..\..\..\src\gpainter.h" />
+    <ClInclude Include="..\..\..\..\src\image.h" />
+    <ClInclude Include="..\..\..\..\src\movie.h" />
+    <ClInclude Include="..\..\..\..\src\object.h" />
+    <ClInclude Include="..\..\..\..\src\objectpool.h" />
+    <ClInclude Include="..\..\..\..\src\ref.h" />
+    <ClInclude Include="..\..\..\..\src\resourcemanager.h" />
+    <ClInclude Include="..\..\..\..\src\runner.h" />
+    <ClInclude Include="..\..\..\..\src\screen.h" />
+    <ClInclude Include="..\..\..\..\src\sdlgame.h" />
+    <ClInclude Include="..\..\..\..\src\sprite.h" />
+    <ClInclude Include="..\..\..\..\src\spritesheet.h" />
+    <ClInclude Include="..\..\..\..\src\tilemap\imagelayer.h" />
+    <ClInclude Include="..\..\..\..\src\tilemap\layer.h" />
+    <ClInclude Include="..\..\..\..\src\tilemap\objectlayer.h" />
+    <ClInclude Include="..\..\..\..\src\tilemap\tilemap.h" />
+    <ClInclude Include="..\..\..\..\src\tilemap\tileset.h" />
+    <ClInclude Include="..\..\..\..\src\timer.h" />
+    <ClInclude Include="..\..\..\..\src\world.h" />
+    <ClInclude Include="..\..\screen\game.h" />
+    <ClInclude Include="..\..\screen\menu.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

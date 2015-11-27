@@ -47,11 +47,8 @@ bool TileMap::load(const char * file)
 		if(*p == '/')
 			*p = 0;
 
-		//_splitpath(file, 0, _basePath, 0, 0);
-
 		analyzeMapInfo(root);
-		for(XMLElement* e = root->FirstChildElement(); e != 0; 
-			e = e->NextSiblingElement())
+		for(XMLElement* e = root->FirstChildElement(); e != 0; e = e->NextSiblingElement())
 		{
 			if(e->Value() == std::string("tileset"))
 				this->analyzeTileset(e);

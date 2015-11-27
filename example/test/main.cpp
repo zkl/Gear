@@ -1,4 +1,4 @@
-#include "../src/sdlgame.h"
+#include "../../src/sdlgame.h"
 #include "screen/game.h"
 #include "screen/menu.h"
 
