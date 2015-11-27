@@ -19,15 +19,19 @@ void GImage::resize(int w, int h)
     amask = 0xff000000;
 	#endif
 
-	SDL_Surface* surface = SDL_CreateRGBSurface(0, w, h, 32, rmask, gmask, bmask, amask);
-	if(surface == 0)
-		return ;
+	SDL_Surface* surface = _surface; // backup
 
-	SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
-	SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
+	_surface = SDL_CreateRGBSurface(0, w, h, 32, rmask, gmask, bmask, amask);
+	if(_surface == 0)
+	{
+		_surface = surface;
+		return ;
+	}
+
+	SDL_SetSurfaceBlendMode(_surface, SDL_BLENDMODE_BLEND);
+	SDL_FillRect(_surface, 0, SDL_MapRGBA(_surface->format, 0, 0, 0, 0));
 
 	_update = true;
-	_surface = surface;
 
 	_center.x = _surface->w / 2;
 	_center.y = _surface->h / 2;
