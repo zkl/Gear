@@ -1,8 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "../../src/screen.h"
-#include "../../src/image.h"
+#include "../../../src/screen.h"
+#include "../../../src/image.h"
 
 class Menu : public Screen
 {

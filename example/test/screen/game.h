@@ -1,11 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "../../src/screen.h"
-#include "../../src/world.h"
-#include "../../src/tilemap/tilemap.h"
-#include "../../src/movie.h"
-#include "../../src/spritesheet.h"
+#include "../../../src/screen.h"
+#include "../../../src/world.h"
+#include "../../../src/tilemap/tilemap.h"
+#include "../../../src/movie.h"
+#include "../../../src/spritesheet.h"
 
 class Game : public Screen
 {
