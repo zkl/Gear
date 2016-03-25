@@ -9,11 +9,12 @@ class SDLGame
 {
 public:
 	static SDLGame* getSDLGame();
+
+	bool init(const char * title, int w, int h, int flags);
+
 	void run();
 	void stop();
 	void setFps(int fps);
-
-	virtual bool init(const char * title, int w, int h, int flags);
 
 protected:
 	SDLGame();

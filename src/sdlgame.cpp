@@ -4,8 +4,8 @@
 #include "screen.h"
 
 SDLGame::SDLGame() : 
-	_interval(1000/60),
-	_inited(false)
+	_inited(false),
+	_interval(1000/60)
 {
 	_director = Director::getDirector();
 }
@@ -57,14 +57,14 @@ void SDLGame::run()
 		_uptime = SDL_GetTicks();
 		while(this->running())
 		{
-			unsigned int t = SDL_GetTicks();
+			unsigned int ticks = SDL_GetTicks();
 			this->handleEvents();
 
-			if(t-_uptime > _interval)
+			if(ticks-_uptime > _interval)
 			{
-				this->update(t -_uptime);
+				this->update(ticks - _uptime);
 				this->render();
-				_uptime = t;
+				_uptime = ticks;
 			}
 		};
 	}

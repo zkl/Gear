@@ -56,26 +56,6 @@ inline GImage::GImage(const char* file) :
 		this->load(file);
 }
 
-inline bool GImage::load(const char* file)
-{
-	SDL_Surface* surface = IMG_Load(file);
-	if(surface == 0)
-	{
-		SDL_Log("Image::load filed -> %s\n", file);
-		return false;
-	}
-
-	if(_surface != 0)
-		SDL_FreeSurface(_surface);
-
-	_update = true;
-	_surface = surface;
-
-	_center.x = _surface->w / 2;
-	_center.y = _surface->h / 2;
-	
-	return true;
-}
 
 inline bool GImage::empty()
 {

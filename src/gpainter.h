@@ -1,6 +1,8 @@
 #ifndef G_PAINTER_H
 #define G_PAINTER_H
 
+#include "gimage.h"
+
 class GPainter
 {
 	friend class GImage;

@@ -2,13 +2,13 @@
 #include "object.h"
 
 Object::Object() : 
-	_parent(0),
-	_visiable(true),
-	_actived(true),
 	_x(0),
 	_y(0),
 	_id(0),
-	_type(0)
+	_type(0),
+	_visiable(true),
+	_actived(true),
+	_parent(0)
 {
 }
 
@@ -20,6 +20,7 @@ Object::~Object()
 
 	if(_parent)
 		_parent->removeChild(this);
+
 }
 
 void Object::removeChild(Object * child)

@@ -6,6 +6,7 @@
 #include "ref.h"
 
 #define ADD_CREATE_FUNCTION create()
+
 class Object : public Ref
 {
 public:
