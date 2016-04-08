@@ -9,7 +9,7 @@ int main(int argc, char * argv[])
 	Director::getDirector()->addScreen("menu", new Menu());
 	Director::getDirector()->changeScreen("game");
 
-	game->init("SDL2 Game Demo", 640, 480, 0);
+	game->init("SDL2 Game Demo", 758, 1024, 0);
 	game->run();
 
 	return 0;
